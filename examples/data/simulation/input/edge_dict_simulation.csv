@@ -1,0 +1,7 @@
+Parent,Child,Length
+P0,P1,0.4
+P0,P2,0.1
+P1,T3,0.6
+P1,T4,0.6
+P2,T5,0.9
+P2,T6,0.9
