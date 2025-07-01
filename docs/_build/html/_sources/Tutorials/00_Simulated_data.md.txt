@@ -22,8 +22,8 @@ In this example, we use the topology structure of a time-scaled fate map (repres
 fate_map_path = 'examples/data/simulation/input/edge_dict_simulation.csv'
 edge_dict = load_fate_map_topology(fate_map_path)
 edge = parse_edge_dict(edge_dict)
-fate_map = FateMap(edge)
-newick_format = generate_newick(fate_map)
+fate_map_topology = FateMap(edge)
+newick_format = generate_newick(fate_map_topology)
 ```
 
 **Sample Newick Format Output:**
@@ -38,11 +38,6 @@ newick_format = generate_newick(fate_map)
 # Use R to generate a fate map plot.
 Rscript plot_fate_map.R "((T3:0.6,T4:0.6)P1:0.4,(T5:0.9,T6:0.9)P2:0.1)P0:0;" 1.2 5 0.3 fate_map_plot.pdf
 ```
-
-<div style="text-align: center;">
-  <img src="../_static/a_fate_map.png" alt="Fate Map Visualization" style="width: 30%;">
-</div>
-
 ---
 
 ### 2. Ground Truth GRNs
@@ -57,10 +52,10 @@ Rscript plot_fate_map.R "((T3:0.6,T4:0.6)P1:0.4,(T5:0.9,T6:0.9)P2:0.1)P0:0;" 1.2
 
 ```python
 # Define output path for the ground truth GRN.
-output_path = 'examples/results/simulation/extra_output/ground_truth_grn'
+grns_path = 'examples/results/simulation/additional_output/ground_truth_grn'
 
 # Generate the root GRN.
-grn0 = generate_root_grn(150, 100, output_path)
+grn0 = generate_root_grn(150, 100, grns_path)
 ```
 
 **Sample DataFrame Output:**
@@ -80,7 +75,7 @@ Load the dynamic GRN topology and generate descendant GRNs for each cell cluster
 # Load additional GRN topology and generate descendant GRNs.
 grn_dict_path = 'examples/data/simulation/additional_input_data/grn_dict.csv'
 grn_dict = load_fate_map_topology(grn_dict_path)
-decendent_grns = generate_descendant_grns(7, 150, 100, grn_dict, output_path, grn0)
+decendent_grns = generate_descendant_grns(7, 150, 100, grn_dict, grns_path, grn0)
 ```
 
 ---
@@ -94,9 +89,9 @@ Generate expression data required by SERGIO. For each node, the output DataFrame
 
 ```python
 # Generate scRNA-seq expression data.
-sergio_files_path = 'examples/results/simulation/extra_output/sergio_files'
-output_path = 'examples/results/simulation/extra_output/expression_files'
-generate_expression_data(decendent_grns, 7, 150, 100, 300, sergio_files_path, output_path, 1)
+sergio_files_path = 'examples/results/simulation/additional_output/sergio_files'
+expr_matrix_path = 'examples/results/simulation/additional_output/expression_files'
+generate_expression_data(decendent_grns, 7, 150, 100, 300, sergio_files_path, expr_matrix_path, 1)
 ```
 
 **Console Output (Sample):**
@@ -116,14 +111,13 @@ Convert the generated expression data into the LineageGRN input format. The fina
 
 ```python
 # Convert expression files to LineageGRN input format.
-input_file = 'examples/results/simulation/extra_output/expression_files'
-output_file = 'examples/data/simulation/input/expression_data.csv'
+expression_file_path = 'examples/data/simulation/input/expression_data.csv'
 
 # Load gene names.
 target_genes_name = pd.read_csv('examples/data/simulation/additional_input_data/target_genes_name.csv')['x'].tolist()
 regulatory_genes_name = pd.read_csv('examples/data/simulation/additional_input_data/regulatory_genes_name.csv')['x'].tolist()
 
-convert_expression_file(150, target_genes_name, regulatory_genes_name, input_file, output_file)
+convert_expression_file(150, target_genes_name, regulatory_genes_name, expr_matrix_path, expression_file_path)
 ```
 
 **Sample Converted Data (First Few Rows):**
@@ -145,8 +139,8 @@ Generate scATAC-seq data as a pandas DataFrame with the following columns:
 
 ```python
 # Generate scATAC-seq data.
-output_path = '../data/simulation_data/test/input'
-atac_data = generate_atac_data(decendent_grns, 7, 150, 100, output_path)
+atac_file_path = 'examples/data/simulation/input/atac_data.csv'
+atac_data = generate_atac_data(decendent_grns, 7, 150, 100, atac_file_path)
 ```
 
 ---
@@ -156,17 +150,13 @@ atac_data = generate_atac_data(decendent_grns, 7, 150, 100, output_path)
 Use the generated scATAC-seq and scRNA-seq data to infer GRNs.
 
 ```python
-# Define input file paths.
-atac_file_path = "examples/data/simulation/input/atac_data.csv"
-expression_file_path = "examples/data/simulation/input/expression_data.csv"
-
 # Setup GRN inference.
-saved_dir = 'examples/results/simulation/inferred'
-grns = FateMap(parse_edge_dict(grn_dict))
-grn_inference = GRNInference(atac_file_path, expression_file_path, grns, saved_dir)
+saved_dir = 'examples/results/simulation/inferred_grns/inferred_grn_defult_params'
+fate_map = FateMap(parse_edge_dict(grn_dict))
 
 # Run GRN inference.
-grn_inference.infer_grn()
+grn_inference_result = GRNInference(atac_file_path, expression_file_path, fate_map, saved_dir)
+grn_inference_result.infer_grn(20)
 ```
 
 **Sample Log Output:**
@@ -200,7 +190,7 @@ You can visualize the inferred GRN along a specific path using the `.get_path` m
 
 ```python
 # Example: Get the path for node 'grn5'.
-path = grns.get_path('grn5')
+path = fate_map.get_path('grn5')
 print(path)  # Expected output: ['grn0', 'grn2', 'grn5']
 ```
 
@@ -222,31 +212,31 @@ gene2_interaction = get_gene_interaction(network2)
 gene5_interaction = get_gene_interaction(network5)
 
 # Save interaction results.
-gene0_interaction.to_csv('examples/results/simulation/extra_output/gene0_interaction.csv', header=None)
-gene2_interaction.to_csv('examples/results/simulation/extra_output/gene2_interaction.csv', header=None)
-gene5_interaction.to_csv('examples/results/simulation/extra_output/gene5_interaction.csv', header=None)
+gene0_interaction.to_csv('examples/results/simulation/inferred_grns/interaction_format/gene0_interaction.csv', header=None)
+gene2_interaction.to_csv('examples/results/simulation/inferred_grns/interaction_format/gene2_interaction.csv', header=None)
+gene5_interaction.to_csv('examples/results/simulation/inferred_grns/interaction_format/gene5_interaction.csv', header=None)
 ```
 
 Visualize GRNs on the selected pathways using R scripts:
 
 ```R
 # Plot GRN for grn0.
-Rscript plot_grn.R examples/results/simulation/extra_output/expression_files/Exp_grn5.csv \
+Rscript plot_grn.R examples/results/simulation/additional_output/expression_files/Exp_grn5.csv \
 examples/data/simulation/additional_input_data/target_genes_name.csv \
 examples/data/simulation/additional_input_data/regulatory_genes_name.csv \
-examples/results/simulation/extra_output/gene0_interaction.csv grn0_plot.pdf
+examples/results/simulation/inferred_grns/interaction_format/gene0_interaction.csv grn0_plot.pdf
 
 # Plot GRN for grn2.
-Rscript plot_grn.R examples/results/simulation/extra_output/expression_files/Exp_grn5.csv \
+Rscript plot_grn.R examples/results/simulation/additional_output/expression_files/Exp_grn5.csv \
 examples/data/simulation/additional_input_data/target_genes_name.csv \
 examples/data/simulation/additional_input_data/regulatory_genes_name.csv \
-examples/results/simulation/extra_output/gene2_interaction.csv grn2_plot.pdf
+examples/results/simulation/inferred_grns/interaction_format/gene2_interaction.csv grn2_plot.pdf
 
 # Plot GRN for grn5.
-Rscript plot_grn.R examples/results/simulation/extra_output/expression_files/Exp_grn5.csv \
+Rscript plot_grn.R examples/results/simulation/additional_output/expression_files/Exp_grn5.csv \
 examples/data/simulation/additional_input_data/target_genes_name.csv \
 examples/data/simulation/additional_input_data/regulatory_genes_name.csv \
-examples/results/simulation/extra_output/gene5_interaction.csv grn5_plot.pdf
+examples/results/simulation/inferred_grns/interaction_format/gene5_interaction.csv grn5_plot.pdf
 ```
 
 <div style="text-align: center;">
@@ -267,48 +257,139 @@ auprc_list = []
 
 for node_id in nodes:
     grn_infer = dynamic_networks_dict[node_id]
-    grn_true = pd.read_csv('examples/data/simulation/extra_output/ground_truth_grn/' + node_id + '.csv')
-    grn_true = grn_true.T  # Transpose for comparison
+    grn_true = pd.read_csv('examples/results/simulation/additional_output/ground_truth_grn/'+node_id+'.csv')
+    grn_true = grn_true.T
     auroc = compute_auroc(grn_infer, grn_true, 0.1)
     auprc = compute_auprc(grn_infer, grn_true, 0.1)
     print([node_id, auroc, auprc])
     auroc_list.append([node_id, auroc])
     auprc_list.append([node_id, auprc])
-
-# Create DataFrames for evaluation metrics.
-auroc_df = pd.DataFrame(auroc_list, columns=['node_id', 'value'])
-auprc_df = pd.DataFrame(auprc_list, columns=['node_id', 'value'])
-
-# Save evaluation results.
-auprc_df.to_csv('examples/results/simulation/evaluation_result/auprc.csv', index=False)
-auroc_df.to_csv('examples/results/simulation/evaluation_result/auroc.csv', index=False)
+    
+auroc_df = pd.DataFrame(auroc_list)
+auroc_df.columns = ['node_id','value']
+auprc_df = pd.DataFrame(auprc_list)
+auprc_df.columns = ['node_id','value']
+auprc_df.to_csv('examples/results/simulation/evaluation_result/auprc.csv', index=None)
+auroc_df.to_csv('examples/results/simulation/evaluation_result/auroc.csv', index=None)
 ```
 
 **Sample Output:**
 
 ```plaintext
-['grn0', 0.5994519770589117, 0.6717228828294495]
-['grn1', 0.6709248585954783, 0.712408224107377]
-...
+['grn0', 0.6080135899404416, 0.6076961007516475]
+['grn1', 0.6778555297246805, 0.6693773066892854]
+['grn2', 0.6118844499627417, 0.5970852889617932]
+['grn3', 0.820360973156812, 0.8165970672496445]
+['grn4', 0.8171958121109225, 0.8123780232426353]
+['grn5', 0.8240320911215709, 0.8254550385925934]
+['grn6', 0.8197851536821597, 0.8222811570776326]
 ```
 
-Visualize the evaluation metrics using R:
+## LineageGRN performance verification under perturbed fate map
 
-```R
-# Plot AUROC.
-Rscript plot_AUC.R "((grn3:0.6,grn4:0.6)grn1:0.4,(grn5:0.9,grn6:0.9)grn2:0.1)grn0:0;" \
-examples/results/simulation/evaluation_result/auroc.csv AUROC_plot.pdf TRUE
+Infer GRNs based on the perturbed fate map.
 
-# Plot AUPRC.
-Rscript plot_AUC.R "((grn3:0.6,grn4:0.6)grn1:0.4,(grn5:0.9,grn6:0.9)grn2:0.1)grn0:0;" \
-examples/results/simulation/evaluation_result/auprc.csv AUPRC_plot.pdf TRUE
+```python
+## Perturb the length of the fate map, the strengths are 0.05, 0.1, 0.3, 0.5, 0.7 respectively
+saved_dir_pert005 = 'examples/results/simulation/inferred_grns/inferred_grn_pert005'
+fate_map_pert005 = perturb_branch_lengths(newick_format, sigma=0.05, seed=1234)
+
+grn_inference_result_pert005 = GRNInference(atac_file_path, expression_file_path, fate_map_pert005, saved_dir_pert005)
+grn_inference_result_pert005.infer_grn(20)
+grn_dict_pert005 = get_dynamic_networks(saved_dir_pert005, fate_map_pert005, 0.1, regulatory_genes_name, target_genes_name)
+
+#...
+
+## Perturb the topology of the fate map, but keep the triplets unchanged
+newick_format_pert_topology = '(((grn3:0.6,grn4:0.6)grn1:0.4,grn5:0.9)grn2:0.1,grn6:1.0)grn0:0;'
+saved_dir_pert_topology = 'examples/results/simulation/inferred_grns/inferred_grn_pert_topology'
+
+edge_dict_pert_topology = newick_to_edge_length_dict(newick_format_pert_topology)
+edge_pert_topology = parse_edge_dict(edge_dict_pert_topology)
+fate_map_pert_topology = FateMap(edge_pert_topology)
+
+grn_inference_result_pert_str = GRNInference(atac_file_path, expression_file_path, fate_map_pert_topology, saved_dir_pert_topology)
+grn_inference_result_pert_str.infer_grn(20)
+grn_dict_pert_topology = get_dynamic_networks(saved_dir_pert_topology, fate_map_pert_topology, 0.1, regulatory_genes_name, target_genes_name)
+```
+The **Jaccard index** and **key regulators overlap** are used to compare the differences in GRN inference based on fate maps before and after perturbation.
+
+```python
+jaccard_means = []
+overlap_means = []
+grn_pert = [grn_dict_pert005, grn_dict_pert01, grn_dict_pert03, grn_dict_pert05, grn_dict_pert07, grn_dict_pert_topology]
+for id in range(len(grn_pert)):
+    jaccard_means.append(metric_perturbation_impact(grn_pert[id], dynamic_networks_dict)[0])
+    overlap_means.append(metric_perturbation_impact(grn_pert[id], dynamic_networks_dict)[1])
+
+print(jaccard_means)
+print(overlap_means)
 ```
 
+**Sample Output:**
+
+```plaintext
+[0.9928021771748436, 0.9306423926821185, 0.9301414871605946, 0.9299776335481349, 0.9281831137652954, 0.8616158941999136]
+[0.9714285714285714, 0.880952380952381, 0.880952380952381, 0.8857142857142858, 0.8857142857142858, 0.8238095238095238]
+```
+
+**Visualization:**
+
+```python
+from matplotlib.font_manager import FontProperties
+import matplotlib.patches as mpatches
+
+perturbation_labels = ["0.05", "0.1", "0.3", "0.5", "0.7", "Topology"]
+colors = ['#EFEFEF', '#DCDDDD', '#C9CACA', '#B5B5B6', '#9FA0A0', '#A3CA89']
+metric_labels = ["Jaccard index", "Key regulator overlap"]
+
+x = np.arange(len(metric_labels)) 
+bar_width = 0.1
+fig, ax = plt.subplots(figsize=(3.2, 1.6))
+
+for i, (jac, over, color, label) in enumerate(zip(jaccard_means, overlap_means, colors, perturbation_labels)):
+    ax.bar(x[0] + i * bar_width - 0.25, jac, width=bar_width, color=color)
+    ax.bar(x[1] + i * bar_width - 0.25, over, width=bar_width, color=color)
+
+ax.set_xticks(x)
+ax.set_xticklabels(metric_labels, fontsize=6, fontname='Arial')
+
+ax.set_ylabel("GRN similarity", fontsize=6, fontname='Arial')
+ax.set_ylim(0.5, 1.05)
+ax.tick_params(axis='y', labelsize=5)
+for label in ax.get_yticklabels():
+    label.set_fontname('Arial')
+
+legend_handles = [mpatches.Patch(color=col, label=lab) for col, lab in zip(colors, perturbation_labels)]
+legend_font = FontProperties(family='Arial', size=5.5)
+ax.legend(
+    handles=legend_handles,
+    loc='center left',
+    bbox_to_anchor=(1.0, 0.7),
+    prop=legend_font,
+    markerscale=0.8,
+    handlelength=1.0,
+    handleheight=0.8,
+    labelspacing=0.3,
+    borderpad=0.3,
+    borderaxespad=0.4
+)
+
+ax.set_axisbelow(True)
+ax.grid(True, axis='y', linestyle='--', alpha=0.7, linewidth=0.5)
+for spine in ax.spines.values():
+    spine.set_color('#666666')
+ax.tick_params(axis='x', color='#666666')
+ax.tick_params(axis='y', color='#666666')
+
+output_path = 'examples/results/simulation/additional_output/figures'
+filename = "pert_grouped.eps"
+os.makedirs(output_path, exist_ok=True)
+save_path = os.path.join(output_path, filename)
+plt.tight_layout()
+plt.savefig(save_path, format='eps', bbox_inches='tight')
+plt.show()
+```
 <div style="text-align: center;">
-  <img src="../_static/f_AUROC.png" alt="AUROC Plot" style="width: 45%; margin-right: 2%;">
-  <img src="../_static/e_AUPRC.png" alt="AUPRC Plot" style="width: 45%;">
+  <img src="../_static/pert_result.svg" alt="Perturbation Result Visualization" style="width: 50%;">
 </div>
-
----
-
-

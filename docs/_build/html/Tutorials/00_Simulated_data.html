@@ -272,8 +272,8 @@
 <span class="n">fate_map_path</span> <span class="o">=</span> <span class="s1">&#39;examples/data/simulation/input/edge_dict_simulation.csv&#39;</span>
 <span class="n">edge_dict</span> <span class="o">=</span> <span class="n">load_fate_map_topology</span><span class="p">(</span><span class="n">fate_map_path</span><span class="p">)</span>
 <span class="n">edge</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edge_dict</span><span class="p">)</span>
-<span class="n">fate_map</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
-<span class="n">newick_format</span> <span class="o">=</span> <span class="n">generate_newick</span><span class="p">(</span><span class="n">fate_map</span><span class="p">)</span>
+<span class="n">fate_map_topology</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+<span class="n">newick_format</span> <span class="o">=</span> <span class="n">generate_newick</span><span class="p">(</span><span class="n">fate_map_topology</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Sample Newick Format Output:</strong></p>
@@ -286,9 +286,6 @@
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use R to generate a fate map plot.</span>
 <span class="n">Rscript</span><span class="w"> </span><span class="n">plot_fate_map.R</span><span class="w"> </span><span class="s">&quot;((T3:0.6,T4:0.6)P1:0.4,(T5:0.9,T6:0.9)P2:0.1)P0:0;&quot;</span><span class="w"> </span><span class="m">1.2</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="m">0.3</span><span class="w"> </span><span class="n">fate_map_plot.pdf</span>
 </pre></div>
-</div>
-<div style="text-align: center;">
-  <img src="../_static/a_fate_map.png" alt="Fate Map Visualization" style="width: 30%;">
 </div>
 </section>
 </section>
@@ -308,10 +305,10 @@
 </li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define output path for the ground truth GRN.</span>
-<span class="n">output_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/extra_output/ground_truth_grn&#39;</span>
+<span class="n">grns_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/additional_output/ground_truth_grn&#39;</span>
 
 <span class="c1"># Generate the root GRN.</span>
-<span class="n">grn0</span> <span class="o">=</span> <span class="n">generate_root_grn</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+<span class="n">grn0</span> <span class="o">=</span> <span class="n">generate_root_grn</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">grns_path</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Sample DataFrame Output:</strong></p>
@@ -328,7 +325,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load additional GRN topology and generate descendant GRNs.</span>
 <span class="n">grn_dict_path</span> <span class="o">=</span> <span class="s1">&#39;examples/data/simulation/additional_input_data/grn_dict.csv&#39;</span>
 <span class="n">grn_dict</span> <span class="o">=</span> <span class="n">load_fate_map_topology</span><span class="p">(</span><span class="n">grn_dict_path</span><span class="p">)</span>
-<span class="n">decendent_grns</span> <span class="o">=</span> <span class="n">generate_descendant_grns</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">grn_dict</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">grn0</span><span class="p">)</span>
+<span class="n">decendent_grns</span> <span class="o">=</span> <span class="n">generate_descendant_grns</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">grn_dict</span><span class="p">,</span> <span class="n">grns_path</span><span class="p">,</span> <span class="n">grn0</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -343,9 +340,9 @@
 <li><p><strong>Elements</strong>: gene expression values</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate scRNA-seq expression data.</span>
-<span class="n">sergio_files_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/extra_output/sergio_files&#39;</span>
-<span class="n">output_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/extra_output/expression_files&#39;</span>
-<span class="n">generate_expression_data</span><span class="p">(</span><span class="n">decendent_grns</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="n">sergio_files_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sergio_files_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/additional_output/sergio_files&#39;</span>
+<span class="n">expr_matrix_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/additional_output/expression_files&#39;</span>
+<span class="n">generate_expression_data</span><span class="p">(</span><span class="n">decendent_grns</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="n">sergio_files_path</span><span class="p">,</span> <span class="n">expr_matrix_path</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Console Output (Sample):</strong></p>
@@ -361,14 +358,13 @@ Done with current level
 <p>Convert the generated expression data into the LineageGRN input format. The final DataFrame includes five columns:<br />
 <code class="docutils literal notranslate"><span class="pre">gene_id</span></code>, <code class="docutils literal notranslate"><span class="pre">cell_id</span></code>, <code class="docutils literal notranslate"><span class="pre">gene</span> <span class="pre">expression_value</span></code>, <code class="docutils literal notranslate"><span class="pre">node_id</span></code>, <code class="docutils literal notranslate"><span class="pre">gene_type</span></code> (target_gene or regulator_gene)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert expression files to LineageGRN input format.</span>
-<span class="n">input_file</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/extra_output/expression_files&#39;</span>
-<span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;examples/data/simulation/input/expression_data.csv&#39;</span>
+<span class="n">expression_file_path</span> <span class="o">=</span> <span class="s1">&#39;examples/data/simulation/input/expression_data.csv&#39;</span>
 
 <span class="c1"># Load gene names.</span>
 <span class="n">target_genes_name</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/data/simulation/additional_input_data/target_genes_name.csv&#39;</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">regulatory_genes_name</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/data/simulation/additional_input_data/regulatory_genes_name.csv&#39;</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
-<span class="n">convert_expression_file</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+<span class="n">convert_expression_file</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">expr_matrix_path</span><span class="p">,</span> <span class="n">expression_file_path</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Sample Converted Data (First Few Rows):</strong></p>
@@ -386,8 +382,8 @@ target_0     cell_2    15.0    grn3       target_gene
 <p>Generate scATAC-seq data as a pandas DataFrame with the following columns:<br />
 <code class="docutils literal notranslate"><span class="pre">target_gene_id</span></code>, <code class="docutils literal notranslate"><span class="pre">regulator_id</span></code>, <code class="docutils literal notranslate"><span class="pre">co-accessibility</span> <span class="pre">score</span></code>, <code class="docutils literal notranslate"><span class="pre">node_id</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate scATAC-seq data.</span>
-<span class="n">output_path</span> <span class="o">=</span> <span class="s1">&#39;../data/simulation_data/test/input&#39;</span>
-<span class="n">atac_data</span> <span class="o">=</span> <span class="n">generate_atac_data</span><span class="p">(</span><span class="n">decendent_grns</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+<span class="n">atac_file_path</span> <span class="o">=</span> <span class="s1">&#39;examples/data/simulation/input/atac_data.csv&#39;</span>
+<span class="n">atac_data</span> <span class="o">=</span> <span class="n">generate_atac_data</span><span class="p">(</span><span class="n">decendent_grns</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">atac_file_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -396,17 +392,13 @@ target_0     cell_2    15.0    grn3       target_gene
 <section id="inference-of-gene-regulatory-networks">
 <h2>Inference of Gene Regulatory Networks<a class="headerlink" href="#inference-of-gene-regulatory-networks" title="Link to this heading">¶</a></h2>
 <p>Use the generated scATAC-seq and scRNA-seq data to infer GRNs.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define input file paths.</span>
-<span class="n">atac_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/simulation/input/atac_data.csv&quot;</span>
-<span class="n">expression_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/simulation/input/expression_data.csv&quot;</span>
-
-<span class="c1"># Setup GRN inference.</span>
-<span class="n">saved_dir</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/inferred&#39;</span>
-<span class="n">grns</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">grn_dict</span><span class="p">))</span>
-<span class="n">grn_inference</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path</span><span class="p">,</span> <span class="n">expression_file_path</span><span class="p">,</span> <span class="n">grns</span><span class="p">,</span> <span class="n">saved_dir</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup GRN inference.</span>
+<span class="n">saved_dir</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/inferred_grns/inferred_grn_defult_params&#39;</span>
+<span class="n">fate_map</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">grn_dict</span><span class="p">))</span>
 
 <span class="c1"># Run GRN inference.</span>
-<span class="n">grn_inference</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">()</span>
+<span class="n">grn_inference_result</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path</span><span class="p">,</span> <span class="n">expression_file_path</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="n">saved_dir</span><span class="p">)</span>
+<span class="n">grn_inference_result</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Sample Log Output:</strong></p>
@@ -434,7 +426,7 @@ target_0     cell_2    15.0    grn3       target_gene
 <h3>Visualizing the Fate Map Path<a class="headerlink" href="#visualizing-the-fate-map-path" title="Link to this heading">¶</a></h3>
 <p>You can visualize the inferred GRN along a specific path using the <code class="docutils literal notranslate"><span class="pre">.get_path</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: Get the path for node &#39;grn5&#39;.</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">grns</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s1">&#39;grn5&#39;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">fate_map</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s1">&#39;grn5&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># Expected output: [&#39;grn0&#39;, &#39;grn2&#39;, &#39;grn5&#39;]</span>
 </pre></div>
 </div>
@@ -454,29 +446,29 @@ target_0     cell_2    15.0    grn3       target_gene
 <span class="n">gene5_interaction</span> <span class="o">=</span> <span class="n">get_gene_interaction</span><span class="p">(</span><span class="n">network5</span><span class="p">)</span>
 
 <span class="c1"># Save interaction results.</span>
-<span class="n">gene0_interaction</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/extra_output/gene0_interaction.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">gene2_interaction</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/extra_output/gene2_interaction.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">gene5_interaction</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/extra_output/gene5_interaction.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">gene0_interaction</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/inferred_grns/interaction_format/gene0_interaction.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">gene2_interaction</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/inferred_grns/interaction_format/gene2_interaction.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">gene5_interaction</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/inferred_grns/interaction_format/gene5_interaction.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Visualize GRNs on the selected pathways using R scripts:</p>
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot GRN for grn0.</span>
-<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_grn.R</span><span class="w"> </span><span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">extra_output</span><span class="o">/</span><span class="n">expression_files</span><span class="o">/</span><span class="n">Exp_grn5.csv</span><span class="w"> </span>\
+<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_grn.R</span><span class="w"> </span><span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_output</span><span class="o">/</span><span class="n">expression_files</span><span class="o">/</span><span class="n">Exp_grn5.csv</span><span class="w"> </span>\
 <span class="n">examples</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_input_data</span><span class="o">/</span><span class="n">target_genes_name.csv</span><span class="w"> </span>\
 <span class="n">examples</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_input_data</span><span class="o">/</span><span class="n">regulatory_genes_name.csv</span><span class="w"> </span>\
-<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">extra_output</span><span class="o">/</span><span class="n">gene0_interaction.csv</span><span class="w"> </span><span class="n">grn0_plot.pdf</span>
+<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">inferred_grns</span><span class="o">/</span><span class="n">interaction_format</span><span class="o">/</span><span class="n">gene0_interaction.csv</span><span class="w"> </span><span class="n">grn0_plot.pdf</span>
 
 <span class="c1"># Plot GRN for grn2.</span>
-<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_grn.R</span><span class="w"> </span><span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">extra_output</span><span class="o">/</span><span class="n">expression_files</span><span class="o">/</span><span class="n">Exp_grn5.csv</span><span class="w"> </span>\
+<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_grn.R</span><span class="w"> </span><span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_output</span><span class="o">/</span><span class="n">expression_files</span><span class="o">/</span><span class="n">Exp_grn5.csv</span><span class="w"> </span>\
 <span class="n">examples</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_input_data</span><span class="o">/</span><span class="n">target_genes_name.csv</span><span class="w"> </span>\
 <span class="n">examples</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_input_data</span><span class="o">/</span><span class="n">regulatory_genes_name.csv</span><span class="w"> </span>\
-<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">extra_output</span><span class="o">/</span><span class="n">gene2_interaction.csv</span><span class="w"> </span><span class="n">grn2_plot.pdf</span>
+<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">inferred_grns</span><span class="o">/</span><span class="n">interaction_format</span><span class="o">/</span><span class="n">gene2_interaction.csv</span><span class="w"> </span><span class="n">grn2_plot.pdf</span>
 
 <span class="c1"># Plot GRN for grn5.</span>
-<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_grn.R</span><span class="w"> </span><span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">extra_output</span><span class="o">/</span><span class="n">expression_files</span><span class="o">/</span><span class="n">Exp_grn5.csv</span><span class="w"> </span>\
+<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_grn.R</span><span class="w"> </span><span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_output</span><span class="o">/</span><span class="n">expression_files</span><span class="o">/</span><span class="n">Exp_grn5.csv</span><span class="w"> </span>\
 <span class="n">examples</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_input_data</span><span class="o">/</span><span class="n">target_genes_name.csv</span><span class="w"> </span>\
 <span class="n">examples</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">additional_input_data</span><span class="o">/</span><span class="n">regulatory_genes_name.csv</span><span class="w"> </span>\
-<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">extra_output</span><span class="o">/</span><span class="n">gene5_interaction.csv</span><span class="w"> </span><span class="n">grn5_plot.pdf</span>
+<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">inferred_grns</span><span class="o">/</span><span class="n">interaction_format</span><span class="o">/</span><span class="n">gene5_interaction.csv</span><span class="w"> </span><span class="n">grn5_plot.pdf</span>
 </pre></div>
 </div>
 <div style="text-align: center;">
@@ -495,44 +487,135 @@ target_0     cell_2    15.0    grn3       target_gene
 
 <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
     <span class="n">grn_infer</span> <span class="o">=</span> <span class="n">dynamic_networks_dict</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
-    <span class="n">grn_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/data/simulation/extra_output/ground_truth_grn/&#39;</span> <span class="o">+</span> <span class="n">node_id</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
-    <span class="n">grn_true</span> <span class="o">=</span> <span class="n">grn_true</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose for comparison</span>
+    <span class="n">grn_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/additional_output/ground_truth_grn/&#39;</span><span class="o">+</span><span class="n">node_id</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+    <span class="n">grn_true</span> <span class="o">=</span> <span class="n">grn_true</span><span class="o">.</span><span class="n">T</span>
     <span class="n">auroc</span> <span class="o">=</span> <span class="n">compute_auroc</span><span class="p">(</span><span class="n">grn_infer</span><span class="p">,</span> <span class="n">grn_true</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
     <span class="n">auprc</span> <span class="o">=</span> <span class="n">compute_auprc</span><span class="p">(</span><span class="n">grn_infer</span><span class="p">,</span> <span class="n">grn_true</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">([</span><span class="n">node_id</span><span class="p">,</span> <span class="n">auroc</span><span class="p">,</span> <span class="n">auprc</span><span class="p">])</span>
     <span class="n">auroc_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">node_id</span><span class="p">,</span> <span class="n">auroc</span><span class="p">])</span>
     <span class="n">auprc_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">node_id</span><span class="p">,</span> <span class="n">auprc</span><span class="p">])</span>
-
-<span class="c1"># Create DataFrames for evaluation metrics.</span>
-<span class="n">auroc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">auroc_list</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;node_id&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">])</span>
-<span class="n">auprc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">auprc_list</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;node_id&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">])</span>
-
-<span class="c1"># Save evaluation results.</span>
-<span class="n">auprc_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/evaluation_result/auprc.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">auroc_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/evaluation_result/auroc.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+<span class="n">auroc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">auroc_list</span><span class="p">)</span>
+<span class="n">auroc_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;node_id&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+<span class="n">auprc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">auprc_list</span><span class="p">)</span>
+<span class="n">auprc_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;node_id&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+<span class="n">auprc_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/evaluation_result/auprc.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">auroc_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;examples/results/simulation/evaluation_result/auroc.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Sample Output:</strong></p>
-<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>[&#39;grn0&#39;, 0.5994519770589117, 0.6717228828294495]
-[&#39;grn1&#39;, 0.6709248585954783, 0.712408224107377]
-...
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>[&#39;grn0&#39;, 0.6080135899404416, 0.6076961007516475]
+[&#39;grn1&#39;, 0.6778555297246805, 0.6693773066892854]
+[&#39;grn2&#39;, 0.6118844499627417, 0.5970852889617932]
+[&#39;grn3&#39;, 0.820360973156812, 0.8165970672496445]
+[&#39;grn4&#39;, 0.8171958121109225, 0.8123780232426353]
+[&#39;grn5&#39;, 0.8240320911215709, 0.8254550385925934]
+[&#39;grn6&#39;, 0.8197851536821597, 0.8222811570776326]
 </pre></div>
 </div>
-<p>Visualize the evaluation metrics using R:</p>
-<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot AUROC.</span>
-<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_AUC.R</span><span class="w"> </span><span class="s">&quot;((grn3:0.6,grn4:0.6)grn1:0.4,(grn5:0.9,grn6:0.9)grn2:0.1)grn0:0;&quot;</span><span class="w"> </span>\
-<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">evaluation_result</span><span class="o">/</span><span class="n">auroc.csv</span><span class="w"> </span><span class="n">AUROC_plot.pdf</span><span class="w"> </span><span class="kc">TRUE</span>
+</section>
+<section id="lineagegrn-performance-verification-under-perturbed-fate-map">
+<h2>LineageGRN performance verification under perturbed fate map<a class="headerlink" href="#lineagegrn-performance-verification-under-perturbed-fate-map" title="Link to this heading">¶</a></h2>
+<p>Infer GRNs based on the perturbed fate map.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## Perturb the length of the fate map, the strengths are 0.05, 0.1, 0.3, 0.5, 0.7 respectively</span>
+<span class="n">saved_dir_pert005</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/inferred_grns/inferred_grn_pert005&#39;</span>
+<span class="n">fate_map_pert005</span> <span class="o">=</span> <span class="n">perturb_branch_lengths</span><span class="p">(</span><span class="n">newick_format</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">)</span>
 
-<span class="c1"># Plot AUPRC.</span>
-<span class="n">Rscript</span><span class="w"> </span><span class="n">plot_AUC.R</span><span class="w"> </span><span class="s">&quot;((grn3:0.6,grn4:0.6)grn1:0.4,(grn5:0.9,grn6:0.9)grn2:0.1)grn0:0;&quot;</span><span class="w"> </span>\
-<span class="n">examples</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">simulation</span><span class="o">/</span><span class="n">evaluation_result</span><span class="o">/</span><span class="n">auprc.csv</span><span class="w"> </span><span class="n">AUPRC_plot.pdf</span><span class="w"> </span><span class="kc">TRUE</span>
+<span class="n">grn_inference_result_pert005</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path</span><span class="p">,</span> <span class="n">expression_file_path</span><span class="p">,</span> <span class="n">fate_map_pert005</span><span class="p">,</span> <span class="n">saved_dir_pert005</span><span class="p">)</span>
+<span class="n">grn_inference_result_pert005</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">grn_dict_pert005</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_pert005</span><span class="p">,</span> <span class="n">fate_map_pert005</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+
+<span class="c1">#...</span>
+
+<span class="c1">## Perturb the topology of the fate map, but keep the triplets unchanged</span>
+<span class="n">newick_format_pert_topology</span> <span class="o">=</span> <span class="s1">&#39;(((grn3:0.6,grn4:0.6)grn1:0.4,grn5:0.9)grn2:0.1,grn6:1.0)grn0:0;&#39;</span>
+<span class="n">saved_dir_pert_topology</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/inferred_grns/inferred_grn_pert_topology&#39;</span>
+
+<span class="n">edge_dict_pert_topology</span> <span class="o">=</span> <span class="n">newick_to_edge_length_dict</span><span class="p">(</span><span class="n">newick_format_pert_topology</span><span class="p">)</span>
+<span class="n">edge_pert_topology</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edge_dict_pert_topology</span><span class="p">)</span>
+<span class="n">fate_map_pert_topology</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edge_pert_topology</span><span class="p">)</span>
+
+<span class="n">grn_inference_result_pert_str</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path</span><span class="p">,</span> <span class="n">expression_file_path</span><span class="p">,</span> <span class="n">fate_map_pert_topology</span><span class="p">,</span> <span class="n">saved_dir_pert_topology</span><span class="p">)</span>
+<span class="n">grn_inference_result_pert_str</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">grn_dict_pert_topology</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_pert_topology</span><span class="p">,</span> <span class="n">fate_map_pert_topology</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <strong>Jaccard index</strong> and <strong>key regulators overlap</strong> are used to compare the differences in GRN inference based on fate maps before and after perturbation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">jaccard_means</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">overlap_means</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">grn_pert</span> <span class="o">=</span> <span class="p">[</span><span class="n">grn_dict_pert005</span><span class="p">,</span> <span class="n">grn_dict_pert01</span><span class="p">,</span> <span class="n">grn_dict_pert03</span><span class="p">,</span> <span class="n">grn_dict_pert05</span><span class="p">,</span> <span class="n">grn_dict_pert07</span><span class="p">,</span> <span class="n">grn_dict_pert_topology</span><span class="p">]</span>
+<span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grn_pert</span><span class="p">)):</span>
+    <span class="n">jaccard_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metric_perturbation_impact</span><span class="p">(</span><span class="n">grn_pert</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="n">dynamic_networks_dict</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">overlap_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metric_perturbation_impact</span><span class="p">(</span><span class="n">grn_pert</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="n">dynamic_networks_dict</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">jaccard_means</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">overlap_means</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Sample Output:</strong></p>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>[0.9928021771748436, 0.9306423926821185, 0.9301414871605946, 0.9299776335481349, 0.9281831137652954, 0.8616158941999136]
+[0.9714285714285714, 0.880952380952381, 0.880952380952381, 0.8857142857142858, 0.8857142857142858, 0.8238095238095238]
+</pre></div>
+</div>
+<p><strong>Visualization:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="kn">import</span> <span class="n">FontProperties</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+
+<span class="n">perturbation_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;0.05&quot;</span><span class="p">,</span> <span class="s2">&quot;0.1&quot;</span><span class="p">,</span> <span class="s2">&quot;0.3&quot;</span><span class="p">,</span> <span class="s2">&quot;0.5&quot;</span><span class="p">,</span> <span class="s2">&quot;0.7&quot;</span><span class="p">,</span> <span class="s2">&quot;Topology&quot;</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#EFEFEF&#39;</span><span class="p">,</span> <span class="s1">&#39;#DCDDDD&#39;</span><span class="p">,</span> <span class="s1">&#39;#C9CACA&#39;</span><span class="p">,</span> <span class="s1">&#39;#B5B5B6&#39;</span><span class="p">,</span> <span class="s1">&#39;#9FA0A0&#39;</span><span class="p">,</span> <span class="s1">&#39;#A3CA89&#39;</span><span class="p">]</span>
+<span class="n">metric_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Jaccard index&quot;</span><span class="p">,</span> <span class="s2">&quot;Key regulator overlap&quot;</span><span class="p">]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metric_labels</span><span class="p">))</span> 
+<span class="n">bar_width</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">3.2</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">jac</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">jaccard_means</span><span class="p">,</span> <span class="n">overlap_means</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">perturbation_labels</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">bar_width</span> <span class="o">-</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">bar_width</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">bar_width</span> <span class="o">-</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">over</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">bar_width</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">metric_labels</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;GRN similarity&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">():</span>
+    <span class="n">label</span><span class="o">.</span><span class="n">set_fontname</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+
+<span class="n">legend_handles</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">lab</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">lab</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">perturbation_labels</span><span class="p">)]</span>
+<span class="n">legend_font</span> <span class="o">=</span> <span class="n">FontProperties</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+    <span class="n">handles</span><span class="o">=</span><span class="n">legend_handles</span><span class="p">,</span>
+    <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span>
+    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span>
+    <span class="n">prop</span><span class="o">=</span><span class="n">legend_font</span><span class="p">,</span>
+    <span class="n">markerscale</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">handlelength</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">handleheight</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">labelspacing</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">borderpad</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.4</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="n">spine</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;#666666&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#666666&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#666666&#39;</span><span class="p">)</span>
+
+<span class="n">output_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/simulation/additional_output/figures&#39;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;pert_grouped.eps&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;eps&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <div style="text-align: center;">
-  <img src="../_static/f_AUROC.png" alt="AUROC Plot" style="width: 45%; margin-right: 2%;">
-  <img src="../_static/e_AUPRC.png" alt="AUPRC Plot" style="width: 45%;">
+  <img src="../_static/pert_result.svg" alt="Perturbation Result Visualization" style="width: 50%;">
 </div>
-<hr class="docutils" />
 </section>
 </section>
 
@@ -612,6 +695,7 @@ target_0     cell_2    15.0    grn3       target_gene
 </ul>
 </li>
 <li><a class="reference internal" href="#validation-of-lineagegrn-performance">Validation of LineageGRN Performance</a></li>
+<li><a class="reference internal" href="#lineagegrn-performance-verification-under-perturbed-fate-map">LineageGRN performance verification under perturbed fate map</a></li>
 </ul>
 </li>
 </ul>

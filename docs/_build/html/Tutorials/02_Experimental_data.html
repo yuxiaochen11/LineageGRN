@@ -372,28 +372,6 @@
 <li><p><a class="reference external" href="https://drive5.com/muscle5/">Muscle</a> for sequence alignment.</p></li>
 </ul>
 </section>
-<section id="demo">
-<h4>Demo<a class="headerlink" href="#demo" title="Link to this heading">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert CSV to FASTA, run MUSCLE for alignment, and generate the mutation matrix.</span>
-<span class="n">input_csv_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/zebrafish/raw_input/raw_barcode.csv&quot;</span>  
-<span class="n">output_fasta_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/zebrafish/raw_input/output.fasta&quot;</span>  
-<span class="n">csv_to_fasta</span><span class="p">(</span><span class="n">input_csv_path</span><span class="p">,</span> <span class="n">output_fasta_path</span><span class="p">)</span>
-
-<span class="n">aligned_file</span> <span class="o">=</span> <span class="n">run_muscle</span><span class="p">(</span><span class="n">output_fasta_path</span><span class="p">)</span> 
-<span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;examples/data/zebrafish/raw_input/parse_aligned_sequences.csv&quot;</span>  
-<span class="n">aligned_sequences</span> <span class="o">=</span> <span class="n">parse_muscle_output</span><span class="p">(</span><span class="n">aligned_file</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">aligned_sequences</span><span class="p">:</span>
-    <span class="n">save_aligned_sequences</span><span class="p">(</span><span class="n">aligned_sequences</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
-    <span class="n">sort_file</span> <span class="o">=</span> <span class="s2">&quot;examples/data/zebrafish/raw_input/sort_parse_aligned_sequences.csv&quot;</span>
-    <span class="n">sort_by_sequence_id</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">sort_file</span><span class="p">)</span>
- 
-<span class="n">data</span> <span class="o">=</span> <span class="n">read_aligned_sequences</span><span class="p">(</span><span class="n">sort_file</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">mutation_matrix</span> <span class="o">=</span> <span class="n">generate_mutation_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">save_mutation_matrix</span><span class="p">(</span><span class="n">mutation_matrix</span><span class="p">,</span> <span class="s2">&quot;examples/data/zebrafish/input/barcode_site.csv&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
 </section>
 <hr class="docutils" />
 <section id="id2">
@@ -681,15 +659,10 @@
 <section id="identifying-constitutive-and-specific-regulatory-interactions">
 <h3>Identifying Constitutive and Specific Regulatory Interactions<a class="headerlink" href="#identifying-constitutive-and-specific-regulatory-interactions" title="Link to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">weight_matrix</span> <span class="o">=</span> <span class="n">cluster_regulatory_interactions</span><span class="p">(</span><span class="n">saved_dir</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">target_gene_names</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regulator_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">edges_cluster_to_nodes</span> <span class="o">=</span> <span class="n">identify_regulatory_interactions_specificity</span><span class="p">(</span>
-    <span class="n">saved_dir</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">target_gene_names</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regulator_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">),</span> <span class="n">weight_matrix</span>
-<span class="p">)</span>
+<span class="n">edges_cluster_to_nodes</span> <span class="o">=</span> <span class="n">identify_regulatory_interactions_specificity</span><span class="p">(</span><span class="n">saved_dir</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">target_gene_names</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regulator_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">),</span> <span class="n">weight_matrix</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Visualization</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_regulatory_interactions_clustering</span><span class="p">(</span><span class="n">weight_matrix</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
-</pre></div>
-</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_regulatory_interactions_in_celltypes</span><span class="p">(</span><span class="n">edges_cluster_to_nodes</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -766,7 +739,6 @@
 <li><a class="reference internal" href="#id1">Time-scaled Cell Fate Map</a><ul>
 <li><a class="reference internal" href="#preprocessing-steps">Preprocessing Steps</a></li>
 <li><a class="reference internal" href="#references-and-tools-used">References and Tools Used</a></li>
-<li><a class="reference internal" href="#demo">Demo</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#id2">scRNA-seq Data</a><ul>

@@ -325,16 +325,13 @@
 <section id="id1">
 <h3>Time-scaled Cell Fate Map<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <p>In this example, we utilize the well-established cell lineage tree of C.elegans. The lineage tree consists of six subtrees, each representing a distinct cell fate map.</p>
-<p>Taking the MSE lineage as an example, the topological structure of the cell fate map is provided using the <code class="docutils literal notranslate"><span class="pre">Dict</span></code> data type. The process involves the following steps:</p>
+<p>Taking the EMS lineage as an example, the topological structure of the cell fate map is provided using the <code class="docutils literal notranslate"><span class="pre">Dict</span></code> data type. The process involves the following steps:</p>
 <ol class="arabic simple">
 <li><p><strong>Load the topology data</strong> from a CSV file containing edge information.</p></li>
 <li><p><strong>Parse the edge dictionary</strong> to extract the relationships between cells.</p></li>
 <li><p><strong>Instantiate the <code class="docutils literal notranslate"><span class="pre">FateMap</span></code> object</strong>, which generates the final fate map based on the provided topology.</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lineagegrn.cell_lineage_reconstruction</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="c1"># Load cell lineage topology data</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load cell lineage topology data</span>
 <span class="n">map_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/data/C.elegans/C.elegans_Full/additional_input_data/fate_map_topology.csv&#39;</span><span class="p">)</span>
 <span class="n">edges_dict_Celegans</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -359,9 +356,9 @@
 <span class="n">edges_ABal</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABal&#39;</span><span class="p">])</span>
 <span class="n">fate_map_ABal</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABal</span><span class="p">)</span>
 
-<span class="c1"># MSE</span>
-<span class="n">edges_MSE</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;MSE&#39;</span><span class="p">])</span>
-<span class="n">fate_map_MSE</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_MSE</span><span class="p">)</span>
+<span class="c1"># EMS</span>
+<span class="n">edges_EMS</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;EMS&#39;</span><span class="p">])</span>
+<span class="n">fate_map_EMS</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_EMS</span><span class="p">)</span>
 
 <span class="c1"># P2</span>
 <span class="n">edges_P2</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;P2&#39;</span><span class="p">])</span>
@@ -477,9 +474,9 @@
 <section id="inference-of-gene-regulatory-networks">
 <h2>Inference of Gene Regulatory Networks<a class="headerlink" href="#inference-of-gene-regulatory-networks" title="Link to this heading">¶</a></h2>
 <p>This step inputs the preprocessed data files.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define file paths for MSE lineage </span>
-<span class="n">atac_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/MSE/atac_data.csv&quot;</span>
-<span class="n">expression_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/MSE/expression_data.csv&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define file paths for EMS lineage </span>
+<span class="n">atac_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/EMS/atac_data.csv&quot;</span>
+<span class="n">expression_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/EMS/expression_data.csv&quot;</span>
 </pre></div>
 </div>
 <p>This step generates a dataframe for each target gene with the following structure:</p>
@@ -495,57 +492,99 @@
 </ul>
 <section id="grn-inference-for-different-lineages">
 <h3>GRN Inference for Different Lineages<a class="headerlink" href="#grn-inference-for-different-lineages" title="Link to this heading">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## ABpr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## setup</span>
+<span class="n">target_genes_name</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/additional_input_data/target_genes_name.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="n">regulatory_genes_name</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/additional_input_data/regulatory_genes_name.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+<span class="n">output_path</span><span class="o">=</span><span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/figures/&#39;</span>
+
+<span class="n">tar_num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">target_genes_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>GRN inference</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edges_ABpr</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABpr&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABpr</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABpr</span><span class="p">)</span>
 <span class="n">atac_file_path_ABpr</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpr/atac_data.csv&quot;</span>
 <span class="n">expression_file_path_ABpr</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpr/expression_data.csv&quot;</span>
-<span class="n">saved_dir_ABpr</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABpr&quot;</span>
 
-<span class="n">grn_inference_ABpr</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABpr</span><span class="p">,</span> <span class="n">expression_file_path_ABpr</span><span class="p">,</span> <span class="n">fate_map_ABpr</span><span class="p">,</span> <span class="n">saved_dir_ABpr</span><span class="p">)</span>
-<span class="n">grn_inference_ABpr</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">saved_dir_ABpr</span> <span class="o">=</span> <span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/ABpr&#39;</span>
+
+<span class="n">grn_inference_result</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABpr</span><span class="p">,</span> <span class="n">expression_file_path_ABpr</span><span class="p">,</span> <span class="n">fate_map_ABpr</span><span class="p">,</span> <span class="n">saved_dir_ABpr</span><span class="p">)</span>
+<span class="n">grn_inference_result</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">ABpr_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABpr</span><span class="p">,</span> <span class="n">fate_map_ABpr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
 
 <span class="c1">## ABpl</span>
+<span class="n">edges_ABpl</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABpl&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABpl</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABpl</span><span class="p">)</span>
 <span class="n">atac_file_path_ABpl</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpl/atac_data.csv&quot;</span>
 <span class="n">expression_file_path_ABpl</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpl/expression_data.csv&quot;</span>
-<span class="n">saved_dir_ABpl</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABpl&quot;</span>
 
-<span class="n">grn_inference_ABpl</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABpl</span><span class="p">,</span> <span class="n">expression_file_path_ABpl</span><span class="p">,</span> <span class="n">fate_map_ABpl</span><span class="p">,</span> <span class="n">saved_dir_ABpl</span><span class="p">)</span>
-<span class="n">grn_inference_ABpl</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">saved_dir_ABpl</span> <span class="o">=</span> <span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/ABpl&#39;</span>
+
+<span class="n">grn_inference_result</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABpl</span><span class="p">,</span> <span class="n">expression_file_path_ABpl</span><span class="p">,</span> <span class="n">fate_map_ABpl</span><span class="p">,</span> <span class="n">saved_dir_ABpl</span><span class="p">)</span>
+<span class="n">grn_inference_result</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">ABpl_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABpl</span><span class="p">,</span> <span class="n">fate_map_ABpl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
 
 <span class="c1">## ABar</span>
+<span class="n">edges_ABar</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABar&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABar</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABar</span><span class="p">)</span>
 <span class="n">atac_file_path_ABar</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABar/atac_data.csv&quot;</span>
 <span class="n">expression_file_path_ABar</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABar/expression_data.csv&quot;</span>
-<span class="n">saved_dir_ABar</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABar&quot;</span>
 
-<span class="n">grn_inference_ABar</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABar</span><span class="p">,</span> <span class="n">expression_file_path_ABar</span><span class="p">,</span> <span class="n">fate_map_ABar</span><span class="p">,</span> <span class="n">saved_dir_ABar</span><span class="p">)</span>
-<span class="n">grn_inference_ABar</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">saved_dir_ABar</span> <span class="o">=</span> <span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/ABar&#39;</span>
+
+<span class="n">grn_inference_result</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABar</span><span class="p">,</span> <span class="n">expression_file_path_ABar</span><span class="p">,</span><span class="n">fate_map_ABar</span><span class="p">,</span> <span class="n">saved_dir_ABar</span><span class="p">)</span>
+<span class="n">grn_inference_result</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">ABar_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABar</span><span class="p">,</span><span class="n">fate_map_ABar</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
 
 <span class="c1">## ABal</span>
+<span class="n">edges_ABal</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABal&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABal</span><span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABal</span><span class="p">)</span>
 <span class="n">atac_file_path_ABal</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABal/atac_data.csv&quot;</span>
 <span class="n">expression_file_path_ABal</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABal/expression_data.csv&quot;</span>
-<span class="n">saved_dir_ABal</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABal&quot;</span>
 
-<span class="n">grn_inference_ABal</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABal</span><span class="p">,</span> <span class="n">expression_file_path_ABal</span><span class="p">,</span> <span class="n">fate_map_ABal</span><span class="p">,</span> <span class="n">saved_dir_ABal</span><span class="p">)</span>
-<span class="n">grn_inference_ABal</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">saved_dir_ABal</span> <span class="o">=</span> <span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/ABal&#39;</span>
+
+<span class="n">grn_inference_result</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABal</span><span class="p">,</span> <span class="n">expression_file_path_ABal</span><span class="p">,</span><span class="n">fate_map_ABal</span><span class="p">,</span> <span class="n">saved_dir_ABal</span><span class="p">)</span>
+<span class="n">grn_inference_result</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">ABal_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABal</span><span class="p">,</span> <span class="n">fate_map_ABal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+
+<span class="c1">## EMS</span>
+<span class="n">edges_EMS</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;EMS&#39;</span><span class="p">])</span>
+<span class="n">fate_map_EMS</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_EMS</span><span class="p">)</span>
+<span class="n">atac_file_path_EMS</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/EMS/atac_data.csv&quot;</span>
+<span class="n">expression_file_path_EMS</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/EMS/expression_data.csv&quot;</span>
+
+<span class="n">saved_dir_EMS</span> <span class="o">=</span> <span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/EMS&#39;</span>
+
+<span class="n">grn_inference_result</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_EMS</span><span class="p">,</span> <span class="n">expression_file_path_EMS</span><span class="p">,</span> <span class="n">fate_map_EMS</span><span class="p">,</span> <span class="n">saved_dir_EMS</span><span class="p">)</span>
+<span class="n">grn_inference_result</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">EMS_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_EMS</span><span class="p">,</span> <span class="n">fate_map_EMS</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+
+<span class="c1">## P2</span>
+<span class="n">edges_P2</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;P2&#39;</span><span class="p">])</span>
+<span class="n">fate_map_P2</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_P2</span><span class="p">)</span>
+<span class="n">atac_file_path_P2</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/P2/atac_data.csv&quot;</span>
+<span class="n">expression_file_path_P2</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/P2/expression_data.csv&quot;</span>
+
+<span class="n">saved_dir_P2</span> <span class="o">=</span> <span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/P2&#39;</span>
+
+<span class="n">grn_inference_result</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_P2</span><span class="p">,</span> <span class="n">expression_file_path_P2</span><span class="p">,</span> <span class="n">fate_map_P2</span><span class="p">,</span> <span class="n">saved_dir_P2</span><span class="p">)</span>
+<span class="n">grn_inference_result</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">P2_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_P2</span><span class="p">,</span> <span class="n">fate_map_P2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+
 </pre></div>
 </div>
 <div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>2024-09-24 11:32:58,551 - INFO - 52272 Start fitting target_gene_id:eef-1A.1
 2024-09-24 11:34:56,762 - INFO - 25168 Finish inferencing leaves grn value for target_gene_id:eef-1A.1
 2024-09-24 11:34:56,763 - INFO - 25168 Saved grn values for target_gene_id:eef-1A.1
 ...
-</pre></div>
-</div>
-<p>This step constructs the regulatory network for each target gene and stores the results in a <code class="docutils literal notranslate"><span class="pre">Dict</span></code> using the <code class="docutils literal notranslate"><span class="pre">.get_target_networks</span></code> method with a regulatory strength threshold (default: <code class="docutils literal notranslate"><span class="pre">0.1</span></code>):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">target_networks_ABpr</span> <span class="o">=</span> <span class="n">grn_inference_ABpr</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">target_networks_ABpl</span> <span class="o">=</span> <span class="n">grn_inference_ABpl</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">target_networks_ABar</span> <span class="o">=</span> <span class="n">grn_inference_ABar</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">target_networks_ABal</span> <span class="o">=</span> <span class="n">grn_inference_ABal</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This step further constructs the GRN in each cell cluster on the fate map and stores the results in a <code class="docutils literal notranslate"><span class="pre">Dict</span></code> using the <code class="docutils literal notranslate"><span class="pre">get_dynamic_networks</span></code> function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ABpr_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABpr</span><span class="p">,</span> <span class="n">fate_map_ABpr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
-<span class="n">ABpl_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABpl</span><span class="p">,</span> <span class="n">fate_map_ABpl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
-<span class="n">ABar_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABar</span><span class="p">,</span> <span class="n">fate_map_ABar</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
-<span class="n">ABal_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABal</span><span class="p">,</span> <span class="n">fate_map_ABal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -560,27 +599,27 @@ Input the gene expression matrix of progenitor cell types.</p></li>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/additional_input_data&quot;</span>
+<span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;examples/data/C.elegans/C.elegans_Full/additional_input_data&#39;</span>
 
 <span class="n">file_names</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;ABprp_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABprap_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABara_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABaraap_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABplpa_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABalp_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABala_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABplapp_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABplp_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABarp_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABarpa_count_matrix.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ABprpa_count_matrix.csv&quot;</span>
+    <span class="s1">&#39;ABprp_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABprap_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABara_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABaraap_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABplpa_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABalp_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABala_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABplapp_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABplp_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABarp_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABarpa_count_matrix.csv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ABprpa_count_matrix.csv&#39;</span>
 <span class="p">]</span>
-
 <span class="n">count_matrices</span> <span class="o">=</span> <span class="p">{}</span>
+
 <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">:</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">count_matrices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">count_matrices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span>
 </pre></div>
 </div>
 <p>This step normalizes the expression matrix and splits it into target gene expression and regulatory gene expression matrices.</p>
@@ -700,9 +739,41 @@ Input the gene expression matrix of progenitor cell types.</p></li>
     <span class="n">ABprap_high_expression_tar</span><span class="p">,</span>
     <span class="n">ABprp_high_expression_tar</span>
 <span class="p">]</span>
+</pre></div>
+</div>
+<p>Output the matching result and visualization</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">norm_sums</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">,</span> <span class="n">perm_choice</span><span class="p">,</span> <span class="n">sorted_perms</span> <span class="o">=</span> <span class="n">match_ExpData</span><span class="p">(</span><span class="n">data_inf</span><span class="p">,</span> <span class="n">data_real</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">identity</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_inf</span><span class="p">)))</span>
+<span class="n">identity_idx</span> <span class="o">=</span> <span class="n">sorted_perms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span> 
 
-<span class="n">norm_sums</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">,</span> <span class="n">perm_choice</span> <span class="o">=</span> <span class="n">match_ExpData</span><span class="p">(</span><span class="n">data_inf</span><span class="p">,</span> <span class="n">data_real</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function:&quot;</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">)</span>
+<span class="n">case_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">norm_sums</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">case_ids</span><span class="p">,</span> <span class="n">norm_sums</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#A8CDD9&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">identity_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">norm_sums</span><span class="p">[</span><span class="n">identity_idx</span><span class="p">],</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;darkred&#39;</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Case ID (sorted by ascending loss)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Normalized loss&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">norm_sums</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_path</span><span class="o">+</span><span class="s1">&#39;matching_result_small.eps&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;eps&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/matching_result_small.svg" width="200">
+</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function:&quot;</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function (normalized):&quot;</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0):&quot;</span><span class="p">,</span> <span class="n">perm_choice</span><span class="p">)</span>
 </pre></div>
@@ -712,21 +783,6 @@ The minimum loss function (normalized): 0.0
 The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0): (0, 1, 2, 3, 4, 5)
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Output the loss function and matching index corresponding to the 100th-ranked matching method</span>
-<span class="n">norm_sums</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">,</span> <span class="n">perm_choice</span> <span class="o">=</span> <span class="n">match_ExpData</span><span class="p">(</span><span class="n">data_inf</span><span class="p">,</span> <span class="n">data_real</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function:&quot;</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function (normalized):&quot;</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0):&quot;</span><span class="p">,</span> <span class="n">perm_choice</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>The minimum loss function: 1219.0
-The minimum loss function (normalized): 0.27450980392156865
-The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0): (0, 1, 4, 5, 2, 3)
-</pre></div>
-</div>
-<p align="center">
-  <img src="../_static/matching_result.svg" width="200">
-</p>
 </section>
 </section>
 <hr class="docutils" />
@@ -949,7 +1005,7 @@ To identify key genes driving cell fate divergence, it is essential to determine
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">weight_matrix</span> <span class="o">=</span> <span class="n">cluster_regulatory_interactions</span><span class="p">(</span><span class="n">saved_dir</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">target_gene_names</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regulator_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>(      MSE  MS  E  MSp-  MSa-  Ep-  Ea-
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>(      EMS  MS  E  MSp-  MSa-  Ep-  Ea-
  0       1   1  1     1     1    1    1
  1       1   1  1     1     1    1    1
  2       1   1  1     1     1    1    1
@@ -991,7 +1047,7 @@ hlh-26-&gt;lin-39         0.001495
 </pre></div>
 </div>
 <div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>EdgeCluster_1	  EdgeCluster_2	  EdgeCluster_3	  EdgeCluster_4	  EdgeCluster_5
-MSE	0.000000	    0.208333	    1.000000	    0.949686	    0.000000
+EMS	0.000000	    0.208333	    1.000000	    0.949686	    0.000000
 MS	0.000000	    0.000000	    1.000000	    1.000000	    0.000000
 E	0.000000	    1.000000	    1.000000	    0.000000	    0.000000
 MSp-	0.008929	    0.023810	    0.936877	    0.981132	    0.029046

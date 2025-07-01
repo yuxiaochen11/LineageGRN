@@ -68,28 +68,6 @@ In this example, we can:
 #### References and Tools Used
 - [Muscle](https://drive5.com/muscle5/) for sequence alignment.
 
-#### Demo
-
-```python
-# Convert CSV to FASTA, run MUSCLE for alignment, and generate the mutation matrix.
-input_csv_path = "examples/data/zebrafish/raw_input/raw_barcode.csv"  
-output_fasta_path = "examples/data/zebrafish/raw_input/output.fasta"  
-csv_to_fasta(input_csv_path, output_fasta_path)
-
-aligned_file = run_muscle(output_fasta_path) 
-output_file = "examples/data/zebrafish/raw_input/parse_aligned_sequences.csv"  
-aligned_sequences = parse_muscle_output(aligned_file)
-if aligned_sequences:
-    save_aligned_sequences(aligned_sequences, output_file)
-    sort_file = "examples/data/zebrafish/raw_input/sort_parse_aligned_sequences.csv"
-    sort_by_sequence_id(output_file, sort_file)
- 
-data = read_aligned_sequences(sort_file)
-if data is not None:
-    mutation_matrix = generate_mutation_matrix(data)
-    save_mutation_matrix(mutation_matrix, "examples/data/zebrafish/input/barcode_site.csv")
-```
-
 ---
 
 ### scRNA-seq Data
@@ -357,16 +335,10 @@ plot_key_genes_fate_bias(merged_df, child_nodes, output_path, figsize=(1.5, 3))
 
 ```python
 X, centers, weight_matrix = cluster_regulatory_interactions(saved_dir, fate_map, 0.1, regulator_names, target_gene_names, len(regulator_names), len(target_gene_names), 4, 2)
-edges_cluster_to_nodes = identify_regulatory_interactions_specificity(
-    saved_dir, fate_map, 0.1, regulator_names, target_gene_names, 4, 0.4, X, len(regulator_names), len(target_gene_names), weight_matrix
-)
+edges_cluster_to_nodes = identify_regulatory_interactions_specificity(saved_dir, fate_map, 0.1, regulator_names, target_gene_names, 4, 0.4, X, len(regulator_names), len(target_gene_names), weight_matrix)
 ```
 
 **Visualization**
-
-```python
-plot_regulatory_interactions_clustering(weight_matrix, output_path)
-```
 
 ```python
 plot_regulatory_interactions_in_celltypes(edges_cluster_to_nodes, output_path)

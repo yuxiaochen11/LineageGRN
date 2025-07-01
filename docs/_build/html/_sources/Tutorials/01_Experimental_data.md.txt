@@ -61,16 +61,13 @@ This **comprehensive-to-focused** strategy first confirms LineageGRN’s effecti
 
 In this example, we utilize the well-established cell lineage tree of C.elegans. The lineage tree consists of six subtrees, each representing a distinct cell fate map.
 
-Taking the MSE lineage as an example, the topological structure of the cell fate map is provided using the `Dict` data type. The process involves the following steps:
+Taking the EMS lineage as an example, the topological structure of the cell fate map is provided using the `Dict` data type. The process involves the following steps:
 
 1. **Load the topology data** from a CSV file containing edge information.
 2. **Parse the edge dictionary** to extract the relationships between cells.
 3. **Instantiate the `FateMap` object**, which generates the final fate map based on the provided topology.
 
 ```python
-from lineagegrn.cell_lineage_reconstruction import *
-import pandas as pd
-
 # Load cell lineage topology data
 map_df = pd.read_csv('examples/data/C.elegans/C.elegans_Full/additional_input_data/fate_map_topology.csv')
 edges_dict_Celegans = {}
@@ -96,9 +93,9 @@ fate_map_ABar = FateMap(edges_ABar)
 edges_ABal = parse_edge_dict(edges_dict_Celegans['ABal'])
 fate_map_ABal = FateMap(edges_ABal)
 
-# MSE
-edges_MSE = parse_edge_dict(edges_dict_Celegans['MSE'])
-fate_map_MSE = FateMap(edges_MSE)
+# EMS
+edges_EMS = parse_edge_dict(edges_dict_Celegans['EMS'])
+fate_map_EMS = FateMap(edges_EMS)
 
 # P2
 edges_P2 = parse_edge_dict(edges_dict_Celegans['P2'])
@@ -168,9 +165,9 @@ fate_map_P2 = FateMap(edges_P2)
 This step inputs the preprocessed data files.
 
 ```python
-# Define file paths for MSE lineage 
-atac_file_path = "examples/data/C.elegans/C.elegans_Full/input_data/MSE/atac_data.csv"
-expression_file_path = "examples/data/C.elegans/C.elegans_Full/input_data/MSE/expression_data.csv"
+# Define file paths for EMS lineage 
+atac_file_path = "examples/data/C.elegans/C.elegans_Full/input_data/EMS/atac_data.csv"
+expression_file_path = "examples/data/C.elegans/C.elegans_Full/input_data/EMS/expression_data.csv"
 ```
 
 This step generates a dataframe for each target gene with the following structure:
@@ -184,37 +181,95 @@ This step generates a dataframe for each target gene with the following structur
 ### GRN Inference for Different Lineages
 
 ```python
-## ABpr
+## setup
+target_genes_name=pd.read_csv("examples/data/C.elegans/C.elegans_Full/additional_input_data/target_genes_name.csv").iloc[:,1].to_list()
+regulatory_genes_name=pd.read_csv("examples/data/C.elegans/C.elegans_Full/additional_input_data/regulatory_genes_name.csv").iloc[:,1].to_list()
+
+output_path='examples/results/C.elegans/C.elegans_Full/figures/'
+
+tar_num=len(target_genes_name)
+```
+
+GRN inference
+
+```python
+edges_ABpr = parse_edge_dict(edges_dict_Celegans['ABpr'])
+fate_map_ABpr = FateMap(edges_ABpr)
 atac_file_path_ABpr = "examples/data/C.elegans/C.elegans_Full/input_data/ABpr/atac_data.csv"
 expression_file_path_ABpr = "examples/data/C.elegans/C.elegans_Full/input_data/ABpr/expression_data.csv"
-saved_dir_ABpr = "examples/results/C.elegans/C.elegans_Full/ABpr"
 
-grn_inference_ABpr = GRNInference(atac_file_path_ABpr, expression_file_path_ABpr, fate_map_ABpr, saved_dir_ABpr)
-grn_inference_ABpr.infer_grn(20)
+saved_dir_ABpr = 'examples/results/C.elegans/C.elegans_Full/ABpr'
+
+grn_inference_result = GRNInference(atac_file_path_ABpr, expression_file_path_ABpr, fate_map_ABpr, saved_dir_ABpr)
+grn_inference_result.infer_grn(20)
+
+ABpr_grn_dict = get_dynamic_networks(saved_dir_ABpr, fate_map_ABpr, 0, regulatory_genes_name, target_genes_name)
 
 ## ABpl
+edges_ABpl = parse_edge_dict(edges_dict_Celegans['ABpl'])
+fate_map_ABpl = FateMap(edges_ABpl)
 atac_file_path_ABpl = "examples/data/C.elegans/C.elegans_Full/input_data/ABpl/atac_data.csv"
 expression_file_path_ABpl = "examples/data/C.elegans/C.elegans_Full/input_data/ABpl/expression_data.csv"
-saved_dir_ABpl = "examples/results/C.elegans/C.elegans_Full/ABpl"
 
-grn_inference_ABpl = GRNInference(atac_file_path_ABpl, expression_file_path_ABpl, fate_map_ABpl, saved_dir_ABpl)
-grn_inference_ABpl.infer_grn(20)
+saved_dir_ABpl = 'examples/results/C.elegans/C.elegans_Full/ABpl'
+
+grn_inference_result = GRNInference(atac_file_path_ABpl, expression_file_path_ABpl, fate_map_ABpl, saved_dir_ABpl)
+grn_inference_result.infer_grn(20)
+
+ABpl_grn_dict = get_dynamic_networks(saved_dir_ABpl, fate_map_ABpl, 0, regulatory_genes_name, target_genes_name)
 
 ## ABar
+edges_ABar = parse_edge_dict(edges_dict_Celegans['ABar'])
+fate_map_ABar = FateMap(edges_ABar)
 atac_file_path_ABar = "examples/data/C.elegans/C.elegans_Full/input_data/ABar/atac_data.csv"
 expression_file_path_ABar = "examples/data/C.elegans/C.elegans_Full/input_data/ABar/expression_data.csv"
-saved_dir_ABar = "examples/results/C.elegans/C.elegans_Full/ABar"
 
-grn_inference_ABar = GRNInference(atac_file_path_ABar, expression_file_path_ABar, fate_map_ABar, saved_dir_ABar)
-grn_inference_ABar.infer_grn(20)
+saved_dir_ABar = 'examples/results/C.elegans/C.elegans_Full/ABar'
+
+grn_inference_result = GRNInference(atac_file_path_ABar, expression_file_path_ABar,fate_map_ABar, saved_dir_ABar)
+grn_inference_result.infer_grn(20)
+
+ABar_grn_dict = get_dynamic_networks(saved_dir_ABar,fate_map_ABar,0,regulatory_genes_name, target_genes_name)
 
 ## ABal
+edges_ABal = parse_edge_dict(edges_dict_Celegans['ABal'])
+fate_map_ABal= FateMap(edges_ABal)
 atac_file_path_ABal = "examples/data/C.elegans/C.elegans_Full/input_data/ABal/atac_data.csv"
 expression_file_path_ABal = "examples/data/C.elegans/C.elegans_Full/input_data/ABal/expression_data.csv"
-saved_dir_ABal = "examples/results/C.elegans/C.elegans_Full/ABal"
 
-grn_inference_ABal = GRNInference(atac_file_path_ABal, expression_file_path_ABal, fate_map_ABal, saved_dir_ABal)
-grn_inference_ABal.infer_grn(20)
+saved_dir_ABal = 'examples/results/C.elegans/C.elegans_Full/ABal'
+
+grn_inference_result = GRNInference(atac_file_path_ABal, expression_file_path_ABal,fate_map_ABal, saved_dir_ABal)
+grn_inference_result.infer_grn(20)
+
+ABal_grn_dict = get_dynamic_networks(saved_dir_ABal, fate_map_ABal, 0, regulatory_genes_name, target_genes_name)
+
+## EMS
+edges_EMS = parse_edge_dict(edges_dict_Celegans['EMS'])
+fate_map_EMS = FateMap(edges_EMS)
+atac_file_path_EMS = "examples/data/C.elegans/C.elegans_Full/input_data/EMS/atac_data.csv"
+expression_file_path_EMS = "examples/data/C.elegans/C.elegans_Full/input_data/EMS/expression_data.csv"
+
+saved_dir_EMS = 'examples/results/C.elegans/C.elegans_Full/EMS'
+
+grn_inference_result = GRNInference(atac_file_path_EMS, expression_file_path_EMS, fate_map_EMS, saved_dir_EMS)
+grn_inference_result.infer_grn(20)
+
+EMS_grn_dict = get_dynamic_networks(saved_dir_EMS, fate_map_EMS, 0, regulatory_genes_name, target_genes_name)
+
+## P2
+edges_P2 = parse_edge_dict(edges_dict_Celegans['P2'])
+fate_map_P2 = FateMap(edges_P2)
+atac_file_path_P2 = "examples/data/C.elegans/C.elegans_Full/input_data/P2/atac_data.csv"
+expression_file_path_P2 = "examples/data/C.elegans/C.elegans_Full/input_data/P2/expression_data.csv"
+
+saved_dir_P2 = 'examples/results/C.elegans/C.elegans_Full/P2'
+
+grn_inference_result = GRNInference(atac_file_path_P2, expression_file_path_P2, fate_map_P2, saved_dir_P2)
+grn_inference_result.infer_grn(20)
+
+P2_grn_dict = get_dynamic_networks(saved_dir_P2, fate_map_P2, 0, regulatory_genes_name, target_genes_name)
+
 ```
 
 ```plaintext
@@ -222,24 +277,6 @@ grn_inference_ABal.infer_grn(20)
 2024-09-24 11:34:56,762 - INFO - 25168 Finish inferencing leaves grn value for target_gene_id:eef-1A.1
 2024-09-24 11:34:56,763 - INFO - 25168 Saved grn values for target_gene_id:eef-1A.1
 ...
-```
-
-This step constructs the regulatory network for each target gene and stores the results in a `Dict` using the `.get_target_networks` method with a regulatory strength threshold (default: `0.1`):
-
-```python
-target_networks_ABpr = grn_inference_ABpr.get_target_networks(0.1)
-target_networks_ABpl = grn_inference_ABpl.get_target_networks(0.1)
-target_networks_ABar = grn_inference_ABar.get_target_networks(0.1)
-target_networks_ABal = grn_inference_ABal.get_target_networks(0.1)
-```
-
-This step further constructs the GRN in each cell cluster on the fate map and stores the results in a `Dict` using the `get_dynamic_networks` function:
-
-```python
-ABpr_grn_dict = get_dynamic_networks(saved_dir_ABpr, fate_map_ABpr, 0, regulatory_genes_name, target_genes_name)
-ABpl_grn_dict = get_dynamic_networks(saved_dir_ABpl, fate_map_ABpl, 0, regulatory_genes_name, target_genes_name)
-ABar_grn_dict = get_dynamic_networks(saved_dir_ABar, fate_map_ABar, 0, regulatory_genes_name, target_genes_name)
-ABal_grn_dict = get_dynamic_networks(saved_dir_ABal, fate_map_ABal, 0, regulatory_genes_name, target_genes_name)
 ```
 
 ---
@@ -253,27 +290,27 @@ ABal_grn_dict = get_dynamic_networks(saved_dir_ABal, fate_map_ABal, 0, regulator
 import os
 import pandas as pd
 
-base_path = "examples/data/C.elegans/C.elegans_Full/additional_input_data"
+base_path = 'examples/data/C.elegans/C.elegans_Full/additional_input_data'
 
 file_names = [
-    "ABprp_count_matrix.csv",
-    "ABprap_count_matrix.csv",
-    "ABara_count_matrix.csv",
-    "ABaraap_count_matrix.csv",
-    "ABplpa_count_matrix.csv",
-    "ABalp_count_matrix.csv",
-    "ABala_count_matrix.csv",
-    "ABplapp_count_matrix.csv",
-    "ABplp_count_matrix.csv",
-    "ABarp_count_matrix.csv",
-    "ABarpa_count_matrix.csv",
-    "ABprpa_count_matrix.csv"
+    'ABprp_count_matrix.csv',
+    'ABprap_count_matrix.csv',
+    'ABara_count_matrix.csv',
+    'ABaraap_count_matrix.csv',
+    'ABplpa_count_matrix.csv',
+    'ABalp_count_matrix.csv',
+    'ABala_count_matrix.csv',
+    'ABplapp_count_matrix.csv',
+    'ABplp_count_matrix.csv',
+    'ABarp_count_matrix.csv',
+    'ABarpa_count_matrix.csv',
+    'ABprpa_count_matrix.csv'
 ]
-
 count_matrices = {}
+
 for file in file_names:
     key = os.path.splitext(file)[0]
-    count_matrices[key] = pd.read_csv(os.path.join(base_path, file), index_col=0)
+    count_matrices[key] = pd.read_csv(os.path.join(base_path, file), index_col=0
 ```
 
 This step normalizes the expression matrix and splits it into target gene expression and regulatory gene expression matrices.
@@ -398,8 +435,44 @@ data_real = [
     ABprap_high_expression_tar,
     ABprp_high_expression_tar
 ]
+```
 
-norm_sums, loss_value, norm_value, perm_choice = match_ExpData(data_inf, data_real, 1) 
+Output the matching result and visualization
+
+```
+norm_sums, loss_value, norm_value, perm_choice, sorted_perms = match_ExpData(data_inf, data_real, 1, 10000)
+identity = tuple(range(len(data_inf)))
+identity_idx = sorted_perms.index(identity) 
+
+case_ids = np.arange(1, len(norm_sums) + 1)
+
+plt.figure(figsize=(2.5, 1.5))
+
+plt.bar(case_ids, norm_sums, color='#A8CDD9', width=1.0)
+
+plt.bar(identity_idx + 1,
+        norm_sums[identity_idx],
+        color='red',
+        edgecolor='darkred',
+        linewidth=2.5,
+        width=1.0)
+
+plt.xlabel("Case ID (sorted by ascending loss)", fontsize=5, fontname='Arial')
+plt.ylabel("Normalized loss", fontsize=5, fontname='Arial')
+plt.xticks(ticks=np.arange(0, len(norm_sums)+1, 40), fontsize=5, fontname='Arial',rotation=90)
+plt.yticks(ticks=np.linspace(0,1,6), fontsize=5, fontname='Arial')
+plt.tick_params(axis='x', length=0.2)
+plt.tick_params(axis='y', length=0.2)
+plt.tight_layout()
+plt.savefig(output_path+'matching_result_small.eps', format='eps', bbox_inches='tight')
+plt.show()
+```
+
+<p align="center">
+  <img src="../_static/matching_result_small.svg" width="200">
+</p>
+
+```python
 print("The minimum loss function:", loss_value)
 print("The minimum loss function (normalized):", norm_value)
 print("The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0):", perm_choice)
@@ -410,25 +483,6 @@ The minimum loss function: 1205.0
 The minimum loss function (normalized): 0.0
 The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0): (0, 1, 2, 3, 4, 5)
 ```
-
-```python
-# Output the loss function and matching index corresponding to the 100th-ranked matching method
-norm_sums, loss_value, norm_value, perm_choice = match_ExpData(data_inf, data_real, 100) 
-print("The minimum loss function:", loss_value)
-print("The minimum loss function (normalized):", norm_value)
-print("The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0):", perm_choice)
-```
-
-```plaintext
-The minimum loss function: 1219.0
-The minimum loss function (normalized): 0.27450980392156865
-The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0): (0, 1, 4, 5, 2, 3)
-```
-
-<p align="center">
-  <img src="../_static/matching_result.svg" width="200">
-</p>
-
 ---
 
 ## Downstream Analysis
@@ -678,7 +732,7 @@ X, centers, weight_matrix = cluster_regulatory_interactions(saved_dir, fate_map,
 ```
 
 ```plaintext
-(      MSE  MS  E  MSp-  MSa-  Ep-  Ea-
+(      EMS  MS  E  MSp-  MSa-  Ep-  Ea-
  0       1   1  1     1     1    1    1
  1       1   1  1     1     1    1    1
  2       1   1  1     1     1    1    1
@@ -723,7 +777,7 @@ identify_regulatory_interactions_specificity = map_edge_clusters_to_nodes(
 
 ```plaintext
 EdgeCluster_1	  EdgeCluster_2	  EdgeCluster_3	  EdgeCluster_4	  EdgeCluster_5
-MSE	0.000000	    0.208333	    1.000000	    0.949686	    0.000000
+EMS	0.000000	    0.208333	    1.000000	    0.949686	    0.000000
 MS	0.000000	    0.000000	    1.000000	    1.000000	    0.000000
 E	0.000000	    1.000000	    1.000000	    0.000000	    0.000000
 MSp-	0.008929	    0.023810	    0.936877	    0.981132	    0.029046
