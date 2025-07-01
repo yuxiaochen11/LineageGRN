@@ -1,0 +1,9 @@
+scipy>=1.13.1
+numpy>=1.26.4
+colorlog>=6.8.2
+pandas>=2.1.4
+myst_parser==4.0.1
+sphinx-intl 
+sphinxcontrib-websupport
+myst_parser
+furo

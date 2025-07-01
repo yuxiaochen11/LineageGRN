@@ -1,0 +1,1129 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Example of Zebrafish Heart Regeneration" href="02_Experimental_data.html" /><link rel="prev" title="Example of Simulated Data" href="00_Simulated_data.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Example of Caenorhabditis elegans Dataset - LineageGRN 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --color-brand-primary: #357473;
+  --color-brand-content: #357473;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">LineageGRN 0.0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="00_Simulated_data.html">Example of Simulated Data</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Example of Caenorhabditis elegans Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_Experimental_data.html">Example of Zebrafish Heart Regeneration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../API/index.html">API</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/Tutorials/01_Experimental_data.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="example-of-caenorhabditis-elegans-dataset">
+<h1>Example of Caenorhabditis elegans Dataset<a class="headerlink" href="#example-of-caenorhabditis-elegans-dataset" title="Link to this heading">¶</a></h1>
+<hr class="docutils" />
+<p>In this tutorial, we demonstrate how to use <strong>LineageGRN</strong> on a <em>Caenorhabditis elegans</em> (C.elegans) dataset. This dataset comprises:</p>
+<ul class="simple">
+<li><p><strong>Cell lineage information</strong>: A well-established developmental lineage map for C. elegans.</p></li>
+<li><p><strong>scRNA-seq data</strong>: Single-cell transcriptomic profiles capturing the expression of genes across developmental stages.</p></li>
+<li><p><strong>scATAC-seq data</strong>: Chromatin accessibility profiles providing complementary information on regulatory region activity.</p></li>
+</ul>
+<p>From the combined single-cell transcriptomic and chromatin accessibility measurements, we identified:</p>
+<ul class="simple">
+<li><p><strong>244 regulatory genes</strong></p></li>
+<li><p><strong>339 target genes</strong></p></li>
+</ul>
+<p align="center">
+  <img src="../_static/Venn_big.png" width="300">
+</p>
+<p>We denote this dataset as <strong>full dataset</strong>, which allows us to perform a comprehensive or “global” gene regulatory network (GRN) inference. By using the full set of regulatory genes and target genes, we can:</p>
+<ol class="arabic simple">
+<li><p>Capture the broad regulatory relationships across the developmental landscape of C. elegans.</p></li>
+<li><p>Thoroughly evaluate the performance of LineageGRN.</p></li>
+</ol>
+<p>After establishing the overall framework and validating the algorithm on the full dataset, we select a subset of:</p>
+<ul class="simple">
+<li><p><strong>34 regulatory genes</strong></p></li>
+<li><p><strong>41 target genes</strong></p></li>
+</ul>
+<p align="center">
+  <img src="../_static/Venn_small.png" width="300">
+</p>
+<p>By narrowing the scope to these core regulators, we can more easily:</p>
+<ol class="arabic simple">
+<li><p><strong>Track reconfiguration patterns</strong> of regulatory networks along the cell fate map.</p></li>
+<li><p><strong>Identify key drivers</strong> of cell differentiation.</p></li>
+<li><p><strong>Identify key drivers</strong> of cell fate bias.</p></li>
+<li><p>Investigate both <strong>specific and constitutive</strong> regulatory interactions among the most influential genes.</p></li>
+</ol>
+<p>This <strong>comprehensive-to-focused</strong> strategy first confirms LineageGRN’s effectiveness across the broad regulatory landscape, then leverages a smaller, targeted subset to deepen insights into how key regulatory factors orchestrate cellular transitions and lineage decisions—ultimately enhancing both the robustness and interpretability of our findings.</p>
+<hr class="docutils" />
+<section id="data-acquisition">
+<h2>Data Acquisition<a class="headerlink" href="#data-acquisition" title="Link to this heading">¶</a></h2>
+<section id="time-scaled-cell-fate-map">
+<h3>Time-Scaled Cell Fate Map<a class="headerlink" href="#time-scaled-cell-fate-map" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE126954">Cell lineage tree</a> capturing the cell division dynamics throughout C.elegans development.</p></li>
+</ul>
+</section>
+<section id="scrna-seq-data">
+<h3>scRNA-seq Data<a class="headerlink" href="#scrna-seq-data" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE126954">Raw scRNA-seq data</a> providing gene expression profiles across diverse C.elegans cell types.</p></li>
+</ul>
+</section>
+<section id="fluorescence-based-gene-expression-data">
+<h3>Fluorescence-Based Gene Expression Data<a class="headerlink" href="#fluorescence-based-gene-expression-data" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://epic.gs.washington.edu">Fluorescence-based gene expression data</a> obtained through time-resolved microscopic imaging, enabling precise quantification of gene expression dynamics at single-cell resolution in C.elegans.</p></li>
+</ul>
+</section>
+<section id="scatac-seq-data">
+<h3>scATAC-seq Data<a class="headerlink" href="#scatac-seq-data" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157017">Raw scATAC-seq data</a> providing chromatin accessibility profiles across all tissues in C.elegans.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="data-preprocessing">
+<h2>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Link to this heading">¶</a></h2>
+<section id="id1">
+<h3>Time-scaled Cell Fate Map<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>In this example, we utilize the well-established cell lineage tree of C.elegans. The lineage tree consists of six subtrees, each representing a distinct cell fate map.</p>
+<p>Taking the MSE lineage as an example, the topological structure of the cell fate map is provided using the <code class="docutils literal notranslate"><span class="pre">Dict</span></code> data type. The process involves the following steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Load the topology data</strong> from a CSV file containing edge information.</p></li>
+<li><p><strong>Parse the edge dictionary</strong> to extract the relationships between cells.</p></li>
+<li><p><strong>Instantiate the <code class="docutils literal notranslate"><span class="pre">FateMap</span></code> object</strong>, which generates the final fate map based on the provided topology.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lineagegrn.cell_lineage_reconstruction</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Load cell lineage topology data</span>
+<span class="n">map_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/data/C.elegans/C.elegans_Full/additional_input_data/fate_map_topology.csv&#39;</span><span class="p">)</span>
+<span class="n">edges_dict_Celegans</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">top_key</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">map_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Lineage&quot;</span><span class="p">):</span>
+    <span class="n">sub_dict</span> <span class="o">=</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Parent&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Child&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Length&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()}</span>
+    <span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="n">top_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_dict</span>
+
+<span class="c1"># Process each subtree</span>
+<span class="c1"># ABpr</span>
+<span class="n">edges_ABpr</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABpr&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABpr</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABpr</span><span class="p">)</span>
+
+<span class="c1"># ABpl</span>
+<span class="n">edges_ABpl</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABpl&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABpl</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABpl</span><span class="p">)</span>
+
+<span class="c1"># ABar</span>
+<span class="n">edges_ABar</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABar&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABar</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABar</span><span class="p">)</span>
+
+<span class="c1"># ABal</span>
+<span class="n">edges_ABal</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABal&#39;</span><span class="p">])</span>
+<span class="n">fate_map_ABal</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_ABal</span><span class="p">)</span>
+
+<span class="c1"># MSE</span>
+<span class="n">edges_MSE</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;MSE&#39;</span><span class="p">])</span>
+<span class="n">fate_map_MSE</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_MSE</span><span class="p">)</span>
+
+<span class="c1"># P2</span>
+<span class="n">edges_P2</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;P2&#39;</span><span class="p">])</span>
+<span class="n">fate_map_P2</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges_P2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/C.elegans_fate_map.png" width="800">
+</p>
+</section>
+<section id="id2">
+<h3>scRNA-seq Data<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<section id="preprocessing-steps">
+<h4>Preprocessing Steps<a class="headerlink" href="#preprocessing-steps" title="Link to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p><strong>Quality Control</strong>:</p>
+<ul class="simple">
+<li><p>Remove cells with low gene expression levels or signs of cell death.</p></li>
+</ul>
+</li>
+<li><p><strong>Highly Variable Genes (Optional)</strong>:</p>
+<ul class="simple">
+<li><p>Select highly variable genes for further analysis.</p></li>
+</ul>
+</li>
+<li><p><strong>Normalization</strong>:</p>
+<ul class="simple">
+<li><p>Normalize gene expression levels so that each cell’s gene expression has zero mean and unit variance.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="references-and-tools-used">
+<h4>References and Tools Used<a class="headerlink" href="#references-and-tools-used" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scanpy.readthedocs.io/">Scanpy</a> or <a class="reference external" href="https://satijalab.org/seurat/">Seurat</a>: Used for quality control, normalization, and selection of highly variable genes.</p></li>
+</ul>
+</section>
+<section id="preprocessed-formats">
+<h4>Preprocessed Formats<a class="headerlink" href="#preprocessed-formats" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Columns</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gene</span> <span class="pre">Name</span></code>: Name of the gene (e.g., GENE_A).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cell</span> <span class="pre">Name</span></code>: Unique identifier for each cell.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gene</span> <span class="pre">Expression</span></code>: Normalized gene expression value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cell</span> <span class="pre">Cluster</span> <span class="pre">ID/Cell</span> <span class="pre">Type</span></code>: Cluster or cell type label.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gene</span> <span class="pre">Type</span></code>: Either <code class="docutils literal notranslate"><span class="pre">Regulatory</span> <span class="pre">Gene</span></code> or <code class="docutils literal notranslate"><span class="pre">Target</span> <span class="pre">Gene</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h3>scATAC-seq Data<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<section id="id4">
+<h4>Preprocessing Steps<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<ol class="arabic simple">
+<li><p><strong>Chromatin Co-accessibility Analysis</strong></p>
+<ul class="simple">
+<li><p>Process raw data using the <code class="docutils literal notranslate"><span class="pre">cicero</span></code> package to identify chromatin fragments (<code class="docutils literal notranslate"><span class="pre">peak1</span></code> and <code class="docutils literal notranslate"><span class="pre">peak2</span></code>) and compute a co-accessibility score.</p></li>
+<li><p>Remove rows with a <code class="docutils literal notranslate"><span class="pre">co-access</span> <span class="pre">score</span></code> less than 0.1.</p></li>
+</ul>
+</li>
+<li><p><strong>Peak-to-Gene Mapping</strong></p>
+<ul class="simple">
+<li><p>Map <code class="docutils literal notranslate"><span class="pre">peak2</span></code> fragments to gene IDs and further to gene names (target genes).</p></li>
+</ul>
+</li>
+<li><p><strong>Motif Identification</strong></p>
+<ul class="simple">
+<li><p>Perform motif scanning on <code class="docutils literal notranslate"><span class="pre">peak1</span></code> regions to identify regulatory genes.</p></li>
+</ul>
+</li>
+<li><p><strong>Regulatory Network Construction</strong></p>
+<ul class="simple">
+<li><p>Establish links:</p>
+<ul>
+<li><p>One <code class="docutils literal notranslate"><span class="pre">peak1</span></code> to <strong>multiple regulatory genes</strong>.</p></li>
+<li><p>One <code class="docutils literal notranslate"><span class="pre">peak2</span></code> to <strong>one target gene</strong>.</p></li>
+<li><p>The co-accessibility score reflects the shared regulatory relationship strength.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id5">
+<h4>References and Tools Used<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cisbp.ccbr.utoronto.ca/">CIS-BP Database</a></p></li>
+<li><p><a class="reference external" href="https://www.bioconductor.org/packages/release/data/annotation/html/BSgenome.Celegans.UCSC.ce10.html">BSgenome.Celegans.UCSC.ce10 R package</a></p></li>
+<li><p><a class="reference external" href="https://cole-trapnell-lab.github.io/cicero-release/">Cicero R package</a></p></li>
+<li><p><a class="reference external" href="https://bioconductor.org/packages/motifmatchr">Motifmatchr R package</a></p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>Preprocessed Formats<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Columns</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Regulatory</span> <span class="pre">Gene</span></code>: Derived from motif scanning on <code class="docutils literal notranslate"><span class="pre">peak1</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Target</span> <span class="pre">Gene</span></code>: Based on genomic position annotation of <code class="docutils literal notranslate"><span class="pre">peak2</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Co-access</span> <span class="pre">Score</span></code>: Regulatory relationship strength.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cell</span> <span class="pre">Cluster</span> <span class="pre">ID/Cell</span> <span class="pre">Type</span></code>: Provides context for the regulatory relationship.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="inference-of-gene-regulatory-networks">
+<h2>Inference of Gene Regulatory Networks<a class="headerlink" href="#inference-of-gene-regulatory-networks" title="Link to this heading">¶</a></h2>
+<p>This step inputs the preprocessed data files.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define file paths for MSE lineage </span>
+<span class="n">atac_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/MSE/atac_data.csv&quot;</span>
+<span class="n">expression_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/MSE/expression_data.csv&quot;</span>
+</pre></div>
+</div>
+<p>This step generates a dataframe for each target gene with the following structure:</p>
+<ul class="simple">
+<li><p><strong>Rows</strong>: Correspond to cell clusters.</p></li>
+<li><p><strong>Columns</strong>: Correspond to regulatory genes.</p>
+<ul>
+<li><p><strong>Column 1</strong>: Target gene name.</p></li>
+<li><p><strong>Column 2</strong>: Cell cluster ID (node in the regulatory network).</p></li>
+<li><p><strong>Column 3~n</strong>: Regulatory relationships between the target gene and its regulators (regulatory strength and mode).</p></li>
+</ul>
+</li>
+</ul>
+<section id="grn-inference-for-different-lineages">
+<h3>GRN Inference for Different Lineages<a class="headerlink" href="#grn-inference-for-different-lineages" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## ABpr</span>
+<span class="n">atac_file_path_ABpr</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpr/atac_data.csv&quot;</span>
+<span class="n">expression_file_path_ABpr</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpr/expression_data.csv&quot;</span>
+<span class="n">saved_dir_ABpr</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABpr&quot;</span>
+
+<span class="n">grn_inference_ABpr</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABpr</span><span class="p">,</span> <span class="n">expression_file_path_ABpr</span><span class="p">,</span> <span class="n">fate_map_ABpr</span><span class="p">,</span> <span class="n">saved_dir_ABpr</span><span class="p">)</span>
+<span class="n">grn_inference_ABpr</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1">## ABpl</span>
+<span class="n">atac_file_path_ABpl</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpl/atac_data.csv&quot;</span>
+<span class="n">expression_file_path_ABpl</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABpl/expression_data.csv&quot;</span>
+<span class="n">saved_dir_ABpl</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABpl&quot;</span>
+
+<span class="n">grn_inference_ABpl</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABpl</span><span class="p">,</span> <span class="n">expression_file_path_ABpl</span><span class="p">,</span> <span class="n">fate_map_ABpl</span><span class="p">,</span> <span class="n">saved_dir_ABpl</span><span class="p">)</span>
+<span class="n">grn_inference_ABpl</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1">## ABar</span>
+<span class="n">atac_file_path_ABar</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABar/atac_data.csv&quot;</span>
+<span class="n">expression_file_path_ABar</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABar/expression_data.csv&quot;</span>
+<span class="n">saved_dir_ABar</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABar&quot;</span>
+
+<span class="n">grn_inference_ABar</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABar</span><span class="p">,</span> <span class="n">expression_file_path_ABar</span><span class="p">,</span> <span class="n">fate_map_ABar</span><span class="p">,</span> <span class="n">saved_dir_ABar</span><span class="p">)</span>
+<span class="n">grn_inference_ABar</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1">## ABal</span>
+<span class="n">atac_file_path_ABal</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABal/atac_data.csv&quot;</span>
+<span class="n">expression_file_path_ABal</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/input_data/ABal/expression_data.csv&quot;</span>
+<span class="n">saved_dir_ABal</span> <span class="o">=</span> <span class="s2">&quot;examples/results/C.elegans/C.elegans_Full/ABal&quot;</span>
+
+<span class="n">grn_inference_ABal</span> <span class="o">=</span> <span class="n">GRNInference</span><span class="p">(</span><span class="n">atac_file_path_ABal</span><span class="p">,</span> <span class="n">expression_file_path_ABal</span><span class="p">,</span> <span class="n">fate_map_ABal</span><span class="p">,</span> <span class="n">saved_dir_ABal</span><span class="p">)</span>
+<span class="n">grn_inference_ABal</span><span class="o">.</span><span class="n">infer_grn</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>2024-09-24 11:32:58,551 - INFO - 52272 Start fitting target_gene_id:eef-1A.1
+2024-09-24 11:34:56,762 - INFO - 25168 Finish inferencing leaves grn value for target_gene_id:eef-1A.1
+2024-09-24 11:34:56,763 - INFO - 25168 Saved grn values for target_gene_id:eef-1A.1
+...
+</pre></div>
+</div>
+<p>This step constructs the regulatory network for each target gene and stores the results in a <code class="docutils literal notranslate"><span class="pre">Dict</span></code> using the <code class="docutils literal notranslate"><span class="pre">.get_target_networks</span></code> method with a regulatory strength threshold (default: <code class="docutils literal notranslate"><span class="pre">0.1</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">target_networks_ABpr</span> <span class="o">=</span> <span class="n">grn_inference_ABpr</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">target_networks_ABpl</span> <span class="o">=</span> <span class="n">grn_inference_ABpl</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">target_networks_ABar</span> <span class="o">=</span> <span class="n">grn_inference_ABar</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">target_networks_ABal</span> <span class="o">=</span> <span class="n">grn_inference_ABal</span><span class="o">.</span><span class="n">get_target_networks</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This step further constructs the GRN in each cell cluster on the fate map and stores the results in a <code class="docutils literal notranslate"><span class="pre">Dict</span></code> using the <code class="docutils literal notranslate"><span class="pre">get_dynamic_networks</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ABpr_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABpr</span><span class="p">,</span> <span class="n">fate_map_ABpr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+<span class="n">ABpl_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABpl</span><span class="p">,</span> <span class="n">fate_map_ABpl</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+<span class="n">ABar_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABar</span><span class="p">,</span> <span class="n">fate_map_ABar</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+<span class="n">ABal_grn_dict</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">saved_dir_ABal</span><span class="p">,</span> <span class="n">fate_map_ABal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="validation-of-lineagegrn-performance">
+<h2>Validation of LineageGRN Performance<a class="headerlink" href="#validation-of-lineagegrn-performance" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Input Measured Expression</strong>:<br />
+Input the gene expression matrix of progenitor cell types.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;examples/data/C.elegans/C.elegans_Full/additional_input_data&quot;</span>
+
+<span class="n">file_names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ABprp_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABprap_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABara_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABaraap_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABplpa_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABalp_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABala_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABplapp_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABplp_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABarp_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABarpa_count_matrix.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ABprpa_count_matrix.csv&quot;</span>
+<span class="p">]</span>
+
+<span class="n">count_matrices</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">:</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">count_matrices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This step normalizes the expression matrix and splits it into target gene expression and regulatory gene expression matrices.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example for ABprp</span>
+<span class="n">ABprp_norm_count_matrix</span> <span class="o">=</span> <span class="n">normalize_to_zero_mean</span><span class="p">(</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABprp_count_matrix&quot;</span><span class="p">])</span>
+<span class="n">ABprp_tar</span> <span class="o">=</span> <span class="n">ABprp_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">tar_num</span><span class="p">),</span> <span class="p">:]</span>
+<span class="n">ABprp_reg</span> <span class="o">=</span> <span class="n">ABprp_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">tar_num</span><span class="p">:,</span> <span class="p">:]</span>
+
+<span class="n">ABprap_norm_count_matrix</span> <span class="o">=</span> <span class="n">normalize_to_zero_mean</span><span class="p">(</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABprap_count_matrix&quot;</span><span class="p">])</span>
+<span class="n">ABprap_tar</span> <span class="o">=</span> <span class="n">ABprap_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">tar_num</span><span class="p">),</span> <span class="p">:]</span>
+<span class="n">ABprap_reg</span> <span class="o">=</span> <span class="n">ABprap_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">tar_num</span><span class="p">:,</span> <span class="p">:]</span>
+
+<span class="n">ABara_norm_count_matrix</span> <span class="o">=</span> <span class="n">normalize_to_zero_mean</span><span class="p">(</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABara_count_matrix&quot;</span><span class="p">])</span>
+<span class="n">ABara_tar</span> <span class="o">=</span> <span class="n">ABara_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">tar_num</span><span class="p">),</span> <span class="p">:]</span>
+<span class="n">ABara_reg</span> <span class="o">=</span> <span class="n">ABara_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">tar_num</span><span class="p">:,</span> <span class="p">:]</span>
+
+<span class="n">ABaraap_norm_count_matrix</span> <span class="o">=</span> <span class="n">normalize_to_zero_mean</span><span class="p">(</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABaraap_count_matrix&quot;</span><span class="p">])</span>
+<span class="n">ABaraap_tar</span> <span class="o">=</span> <span class="n">ABaraap_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">tar_num</span><span class="p">),</span> <span class="p">:]</span>
+<span class="n">ABaraap_reg</span> <span class="o">=</span> <span class="n">ABaraap_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">tar_num</span><span class="p">:,</span> <span class="p">:]</span>
+
+<span class="n">ABplpa_norm_count_matrix</span> <span class="o">=</span> <span class="n">normalize_to_zero_mean</span><span class="p">(</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABplpa_count_matrix&quot;</span><span class="p">])</span>
+<span class="n">ABplpa_tar</span> <span class="o">=</span> <span class="n">ABplpa_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">tar_num</span><span class="p">),</span> <span class="p">:]</span>
+<span class="n">ABplpa_reg</span> <span class="o">=</span> <span class="n">ABplpa_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">tar_num</span><span class="p">:,</span> <span class="p">:]</span>
+
+<span class="n">ABalp_norm_count_matrix</span> <span class="o">=</span> <span class="n">normalize_to_zero_mean</span><span class="p">(</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABalp_count_matrix&quot;</span><span class="p">])</span>
+<span class="n">ABalp_tar</span> <span class="o">=</span> <span class="n">ABalp_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">tar_num</span><span class="p">),</span> <span class="p">:]</span>
+<span class="n">ABalp_reg</span> <span class="o">=</span> <span class="n">ABalp_norm_count_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">tar_num</span><span class="p">:,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+<section id="expression-prediction">
+<h3>Expression Prediction<a class="headerlink" href="#expression-prediction" title="Link to this heading">¶</a></h3>
+<p>This step infers target gene expression levels of progenitor cell types using linear regression models.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">ABprp_grn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABpr_grn_dict</span><span class="p">[</span><span class="s1">&#39;ABprp&#39;</span><span class="p">])</span>
+<span class="n">ABprap_grn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABpr_grn_dict</span><span class="p">[</span><span class="s1">&#39;ABprap&#39;</span><span class="p">])</span>
+<span class="n">ABara_grn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABar_grn_dict</span><span class="p">[</span><span class="s1">&#39;ABara&#39;</span><span class="p">])</span>
+<span class="n">ABaraap_grn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABar_grn_dict</span><span class="p">[</span><span class="s1">&#39;ABaraap&#39;</span><span class="p">])</span>
+<span class="n">ABplpa_grn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABpl_grn_dict</span><span class="p">[</span><span class="s1">&#39;ABplpa&#39;</span><span class="p">])</span>
+<span class="n">ABalp_grn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABal_grn_dict</span><span class="p">[</span><span class="s1">&#39;ABalp&#39;</span><span class="p">])</span>
+
+<span class="n">ABprp_inf_tar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ABprp_grn</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABprp_reg</span><span class="p">))</span>
+<span class="n">ABprap_inf_tar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ABprap_grn</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABprap_reg</span><span class="p">))</span>
+<span class="n">ABara_inf_tar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ABara_grn</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABara_reg</span><span class="p">))</span>
+<span class="n">ABaraap_inf_tar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ABaraap_grn</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABaraap_reg</span><span class="p">))</span>
+<span class="n">ABplpa_inf_tar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ABplpa_grn</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABplpa_reg</span><span class="p">))</span>
+<span class="n">ABalp_inf_tar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ABalp_grn</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ABalp_reg</span><span class="p">))</span>
+
+<span class="c1"># Set target gene names as index</span>
+<span class="n">ABprp_inf_tar</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ABprap_inf_tar</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ABara_inf_tar</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ABaraap_inf_tar</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ABplpa_inf_tar</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">ABalp_inf_tar</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">target_genes_name</span>
+</pre></div>
+</div>
+</section>
+<section id="high-expression-analysis">
+<h3>High Expression Analysis<a class="headerlink" href="#high-expression-analysis" title="Link to this heading">¶</a></h3>
+<p>This step identifies the high-expression target genes for progenitor cell types using the measured and predicted expression data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ABprp_high_expression_tar_infer</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABprp_inf_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABprp_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">ABprp_high_expression_tar</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABprp_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABprp_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">ABprap_high_expression_tar_infer</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABprap_inf_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABprap_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">ABprap_high_expression_tar</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABprap_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABprap_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">ABara_high_expression_tar_infer</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABara_inf_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABara_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">ABara_high_expression_tar</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABara_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABara_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">ABaraap_high_expression_tar_infer</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABaraap_inf_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABaraap_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">ABaraap_high_expression_tar</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABaraap_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABaraap_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">ABplpa_high_expression_tar_infer</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABplpa_inf_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABplpa_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">ABplpa_high_expression_tar</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABplpa_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABplpa_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">ABalp_high_expression_tar_infer</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABalp_inf_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABalp_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">ABalp_high_expression_tar</span> <span class="o">=</span> <span class="n">count_greater_than_threshold</span><span class="p">(</span>
+    <span class="n">ABalp_tar</span><span class="p">,</span> <span class="o">-</span><span class="n">count_matrices</span><span class="p">[</span><span class="s2">&quot;ABalp_count_matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="matching">
+<h3>Matching<a class="headerlink" href="#matching" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_inf</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">ABalp_high_expression_tar_infer</span><span class="p">,</span>
+    <span class="n">ABplpa_high_expression_tar_infer</span><span class="p">,</span>
+    <span class="n">ABaraap_high_expression_tar_infer</span><span class="p">,</span>
+    <span class="n">ABara_high_expression_tar_infer</span><span class="p">,</span>
+    <span class="n">ABprap_high_expression_tar_infer</span><span class="p">,</span>
+    <span class="n">ABprp_high_expression_tar_infer</span>
+<span class="p">]</span>
+
+<span class="n">data_real</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">ABalp_high_expression_tar</span><span class="p">,</span>
+    <span class="n">ABplpa_high_expression_tar</span><span class="p">,</span>
+    <span class="n">ABaraap_high_expression_tar</span><span class="p">,</span>
+    <span class="n">ABara_high_expression_tar</span><span class="p">,</span>
+    <span class="n">ABprap_high_expression_tar</span><span class="p">,</span>
+    <span class="n">ABprp_high_expression_tar</span>
+<span class="p">]</span>
+
+<span class="n">norm_sums</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">,</span> <span class="n">perm_choice</span> <span class="o">=</span> <span class="n">match_ExpData</span><span class="p">(</span><span class="n">data_inf</span><span class="p">,</span> <span class="n">data_real</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function:&quot;</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function (normalized):&quot;</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0):&quot;</span><span class="p">,</span> <span class="n">perm_choice</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>The minimum loss function: 1205.0
+The minimum loss function (normalized): 0.0
+The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0): (0, 1, 2, 3, 4, 5)
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Output the loss function and matching index corresponding to the 100th-ranked matching method</span>
+<span class="n">norm_sums</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">,</span> <span class="n">perm_choice</span> <span class="o">=</span> <span class="n">match_ExpData</span><span class="p">(</span><span class="n">data_inf</span><span class="p">,</span> <span class="n">data_real</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function:&quot;</span><span class="p">,</span> <span class="n">loss_value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The minimum loss function (normalized):&quot;</span><span class="p">,</span> <span class="n">norm_value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0):&quot;</span><span class="p">,</span> <span class="n">perm_choice</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>The minimum loss function: 1219.0
+The minimum loss function (normalized): 0.27450980392156865
+The permutation corresponding to the minimum loss function (column index selected for each row, counting starting from 0): (0, 1, 4, 5, 2, 3)
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/matching_result.svg" width="200">
+</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="downstream-analysis">
+<h2>Downstream Analysis<a class="headerlink" href="#downstream-analysis" title="Link to this heading">¶</a></h2>
+<p>We focus on the smaller, targeted subset comprising 34 regulatory genes and 41 target genes to gain deeper insights into how key regulatory factors orchestrate cell fate decisions.</p>
+<section id="revealing-the-structural-dynamics-of-grns">
+<h3>Revealing the Structural Dynamics of GRNs<a class="headerlink" href="#revealing-the-structural-dynamics-of-grns" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">regulatory_gene_dict</span> <span class="o">=</span> <span class="n">get_regulators</span><span class="p">(</span><span class="s1">&#39;nhr-25&#39;</span><span class="p">,</span> <span class="s1">&#39;Ea-&#39;</span><span class="p">,</span> <span class="n">saved_dir</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>{&#39;ceh-16&#39;: 0.3416499361653389, &#39;ceh-32&#39;: 0.5666916385389806, &#39;nhr-23&#39;: -0.4925718598273363, &#39;nhr-2&#39;: 0.24816905174646298, &#39;ceh-27&#39;: 0.1109726233953044, &#39;mab-5&#39;: -0.5323998868840484, &#39;nob-1&#39;: 0.23886076979862184, &#39;ceh-36&#39;: 0.5233501635329588, &#39;lin-1&#39;: 0.2897392528846144, &#39;eor-1&#39;: -0.4594620129243684, &#39;elt-2&#39;: 0.2976629236568841, &#39;irx-1&#39;: -0.13928695618132647, &#39;pal-1&#39;: 0.2489742931460235, &#39;nhr-79&#39;: -0.254491892554381, &#39;nhr-67&#39;: -0.27121213967865765, &#39;pha-4&#39;: 0.27487150765088963, &#39;nhr-25&#39;: 0.30274213501027825, &#39;dpl-1&#39;: 0.18021229240405684, &#39;hlh-16&#39;: 0.16969014424893344, &#39;elt-1&#39;: 0.36983762199901216, &#39;die-1&#39;: -0.8442123287166449, &#39;mnm-2&#39;: 0.7498769338962882, &#39;ref-2&#39;: 0.3727797808889699, &#39;lsy-27&#39;: -0.1369907430615935, &#39;B0310.2&#39;: -0.6490667615035224, &#39;dmd-4&#39;: -0.6883133898208357, &#39;end-1&#39;: 0.33351354696441643, &#39;end-3&#39;: -0.3033015231479436, &#39;tbx-37&#39;: 0.13312002995799968, &#39;hlh-1&#39;: 0.20481617473191782, &#39;ref-1&#39;: 0.3388880575957087, &#39;egl-5&#39;: -0.32889328111019744, &#39;elt-7&#39;: 0.2227128886808342, &#39;hlh-26&#39;: 0.19039319833013132}
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">target_gene_dict</span> <span class="o">=</span> <span class="n">get_target_genes</span><span class="p">(</span><span class="s1">&#39;elt-7&#39;</span><span class="p">,</span> <span class="s1">&#39;Ea-&#39;</span><span class="p">,</span> <span class="n">saved_dir</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>{&#39;ama-1&#39;: 0.12514667502715765, &#39;B0310.2&#39;: -0.5690056949430876, &#39;B0336.3&#39;: -0.20087389262169697, &#39;ceh-16&#39;: 0.20728454926555562, &#39;ceh-27&#39;: -0.37076693848880266, &#39;ceh-43&#39;: 0.14481679327711647, &#39;die-1&#39;: 0.3327874528028564, &#39;dpl-1&#39;: 0.9878740137951658, &#39;dpy-31&#39;: 0.12992381853423898, &#39;dpy-7&#39;: 0.32438275516616405, &#39;dve-1&#39;: -0.28369422531295474, &#39;eef-1A.1&#39;: 0.13208107870118843, &#39;elt-1&#39;: 0.1485771897337543, &#39;elt-6&#39;: -0.3187646539838563, &#39;elt-7&#39;: -0.1953150517426333, &#39;F16B12.6&#39;: 0.13044802075213238, &#39;his-72&#39;: -0.1813583591231202, &#39;hlh-1&#39;: 0.2157784109364843, &#39;hmg-1.2&#39;: -0.13887148392408816, &#39;hmg-11&#39;: 0.09813520413087781, &#39;hsp-3&#39;: 0.24737695149461586, &#39;irx-1&#39;: -0.2025020427447795, &#39;isw-1&#39;: 0.05843540247802143, &#39;lin-1&#39;: 0.3000627454486636, &#39;lin-11&#39;: -0.034702965083833526, &#39;lin-13&#39;: 0.07181059724759799, &#39;lin-26&#39;: 0.14910339699633657, &#39;lin-39&#39;: 0.047706651933201984, &#39;lir-2&#39;: -0.006536041410562453, &#39;mab-5&#39;: -0.05103641530899973, &#39;mep-1&#39;: 0.2284986996612302, &#39;mml-1&#39;: -0.13379086742843393, &#39;nhr-23&#39;: 0.2373577819074984, &#39;nhr-25&#39;: 0.2227128886808342, &#39;nhr-49&#39;: 0.0037408606991700503, &#39;nhr-57&#39;: 0.13837017790147818, &#39;nhr-68&#39;: -0.3052208724250098, &#39;nob-1&#39;: 0.10537876339917188, &#39;pbrm-1&#39;: 0.22186185639658834, &#39;sma-9&#39;: 0.1577509253281303, &#39;tps-2&#39;: 0.17392960836027058}
+</pre></div>
+</div>
+<p><strong>Visualization Examples</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Visualization of the Changes in the Number of Negative Regulations</strong><br />
+Plot the negative regulatory interactions for each target gene along the fate map.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_target_genes_along_fatemap</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="s1">&#39;negative&#39;</span><span class="p">,</span> <span class="n">saved_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/04_negative_regulator_num.svg" width="200">
+</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Visualization of the Changes in the Number of Positive Regulations</strong><br />
+Plot the positive regulatory interactions for each target gene along the fate map.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_target_genes_along_fatemap</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="n">saved_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/05_positive_regulator_num.svg" width="200">
+</p>
+<ol class="arabic simple" start="3">
+<li><p><strong>Visualization of the Changes in the Total Number of Regulations</strong><br />
+Plot the total number of regulatory interactions for each target gene along the fate map.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_target_genes_along_fatemap</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="n">saved_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/06_total_regulator_num.svg" width="200">
+</p>
+<ol class="arabic simple" start="4">
+<li><p><strong>Visualization of the Dynamic Regulatory Networks for ‘elt-7’</strong><br />
+Plot the dynamic regulatory network of the regulatory gene ‘elt-7’ along the fate map.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_regulatory_network_along_fatemap</span><span class="p">(</span><span class="s1">&#39;elt-7&#39;</span><span class="p">,</span> <span class="n">dynamic_networks_dict</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/07_dynamic_network.svg" width="2000">
+</p>
+<ol class="arabic simple" start="5">
+<li><p><strong>Visualization of Regulatory Strength on the Fate Map Path</strong><br />
+Plot the changes in regulatory strength of each regulatory gene on the fate map path (with ‘Ea-’ as the leaf node) for the target gene ‘nhr-25’.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">fate_map</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;Ea-&quot;</span><span class="p">)</span>
+<span class="n">plot_regulatory_strength_along_fatemap</span><span class="p">(</span><span class="n">saved_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="s1">&#39;nhr-25&#39;</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/08_regulatory_strength.svg" width="400">
+</p>
+<ol class="arabic simple" start="6">
+<li><p><strong>Visualization of Regulator Activity Across Lineages</strong><br />
+Plot the comparison of the activity of the regulatory gene ‘nhr-25’ at different nodes of different fate maps.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">map_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/data/C.elegans/C.elegans_Core/additional_input_data/fate_map_topology.csv&#39;</span><span class="p">)</span>
+<span class="n">edges_dict_Celegans</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">top_key</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">map_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Lineage&quot;</span><span class="p">):</span>
+    <span class="n">sub_dict</span> <span class="o">=</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Parent&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Child&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Length&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()}</span>
+    <span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="n">top_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_dict</span>
+
+<span class="n">input_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">saved_dir</span><span class="p">)</span>
+<span class="n">plot_regulator_activity_across_lineages</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">,</span> <span class="n">input_path</span><span class="p">,</span> <span class="s1">&#39;nhr-25&#39;</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/09_regulator_activity.svg" width="300">
+</p>
+</section>
+<section id="identifying-key-genes-driving-differentiation">
+<h3>Identifying Key Genes Driving Differentiation<a class="headerlink" href="#identifying-key-genes-driving-differentiation" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">key_regulators_df_concat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">lineage</span> <span class="ow">in</span> <span class="n">edges_dict_Celegans</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="n">lineage</span><span class="p">])</span>
+    <span class="n">fatemap</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">high_expression_genes</span><span class="p">[</span><span class="n">lineage</span><span class="p">])</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">fatemap</span><span class="o">.</span><span class="n">node_internals</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">fatemap</span><span class="o">.</span><span class="n">node_root</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">input_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">saved_dir</span><span class="p">),</span> <span class="n">lineage</span><span class="p">)</span>
+        <span class="n">key_regulators</span> <span class="o">=</span> <span class="n">identify_key_genes_differentiation</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">fatemap</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">target_gene_names</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+        <span class="n">high_expression_genes_of_ancestor_node</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">set</span><span class="p">(</span><span class="n">key_regulators</span><span class="o">.</span><span class="n">loc</span><span class="p">[((</span><span class="n">key_regulators</span><span class="p">[</span><span class="s1">&#39;DRS&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">key_regulators</span><span class="p">[</span><span class="s1">&#39;DRC&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.7</span><span class="p">)),</span> <span class="s1">&#39;regulator_id&#39;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">high_expression_genes</span><span class="p">[</span><span class="n">lineage</span><span class="p">][</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">high_expression_genes_of_ancestor_node</span>
+        <span class="n">fatemap</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">high_expression_genes</span><span class="p">[</span><span class="n">lineage</span><span class="p">])</span>
+        <span class="n">key_regulators_df_concat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">key_regulators_df_concat</span><span class="p">,</span> <span class="n">key_regulators</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>regulator_id    positive_regulatory_strength  positive_regulation_number  negative_regulation_number  DRS       DRC  node_id
+ceh-16          3.571054                       9.0                         0.0                         0.396784  1.0  E
+ceh-36          3.414377                       9.0                         0.0                         0.379375  1.0  E
+nhr-2           3.340567                       8.0                         0.0                         0.417571  1.0  E
+elt-7           3.424669                       7.0                         0.0                         0.489238  1.0  E
+nhr-79          2.417552                       6.0                         0.0                         0.402925  1.0  E
+...             ...                            ...                         ...                         ...       ...  ...
+nhr-67          0.034049                       4.0                         4.0                         0.008512  0.5  P2
+</pre></div>
+</div>
+<p><strong>Visualization of Key Gene Differentiation</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key_regulators_df_concat</span><span class="p">[</span><span class="s1">&#39;node_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">())</span>
+<span class="n">plot_key_genes_differentiation</span><span class="p">(</span><span class="n">key_regulators_df_concat</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">))</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/10_key_regulator.svg" width="700">
+</p>
+</section>
+<section id="identifying-key-regulatory-genes-driving-cell-fate-bias">
+<h3>Identifying Key Regulatory Genes Driving Cell Fate Bias<a class="headerlink" href="#identifying-key-regulatory-genes-driving-cell-fate-bias" title="Link to this heading">¶</a></h3>
+<p>!!! tip
+To identify key genes driving cell fate divergence, it is essential to determine the difference in highly expressed target genes between sibling cell types. Therefore, we utilize the larger dataset, which includes 244 regulatory genes and 339 target genes, for key gene identification. However, during the result analysis, we remain focused on a subset of 39 regulatory genes to ensure a more targeted and interpretable analysis.</p>
+<p>This step identifies the high expression target genes in each leaf node of the cell fate map (sampled cell types).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ABar&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABarpp-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABarap-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABarpapp-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABarpapa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABaraaa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABaraapp-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABaraapaa-&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;extra_keys&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABarp&#39;</span><span class="p">,</span> <span class="s1">&#39;ABarpa&#39;</span><span class="p">,</span> <span class="s1">&#39;ABara&#39;</span><span class="p">,</span> <span class="s1">&#39;ABaraa&#39;</span><span class="p">,</span> <span class="s1">&#39;ABaraap&#39;</span><span class="p">,</span> <span class="s1">&#39;ABar&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;ABpr&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABprppa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABprpap-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABprpaa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABpraa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABprappa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABprapa-&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;extra_keys&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABprp&#39;</span><span class="p">,</span> <span class="s1">&#39;ABprpa&#39;</span><span class="p">,</span> <span class="s1">&#39;ABprapp&#39;</span><span class="p">,</span> <span class="s1">&#39;ABpra&#39;</span><span class="p">,</span> <span class="s1">&#39;ABpr&#39;</span><span class="p">,</span> <span class="s1">&#39;ABprap&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;ABpl&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABplpppp-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABplpap-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABplpaa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABplapap-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABplappp-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABplappa-&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;extra_keys&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABplp&#39;</span><span class="p">,</span> <span class="s1">&#39;ABplpa&#39;</span><span class="p">,</span> <span class="s1">&#39;ABpla&#39;</span><span class="p">,</span> <span class="s1">&#39;ABplapp&#39;</span><span class="p">,</span> <span class="s1">&#39;ABpl&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;ABal&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABalpp-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABalpa-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABalap-&#39;</span><span class="p">,</span> <span class="s1">&#39;ABalaa-&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;extra_keys&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ABalp&#39;</span><span class="p">,</span> <span class="s1">&#39;ABala&#39;</span><span class="p">,</span> <span class="s1">&#39;ABal&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">base_path</span> <span class="o">=</span> <span class="s1">&#39;examples/data/C.elegans/C.elegans_Full/additional_input_data&#39;</span>
+<span class="n">gene_expression_matrices</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">high_expression_genes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">group_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">]:</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_path</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_count_matrix.csv&#39;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">gene_expression_matrices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="n">genes_var_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">group_dict</span><span class="p">[</span><span class="n">genes_var_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">get_high_expression_genes</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">target_genes_name</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;extra_keys&#39;</span><span class="p">]:</span>
+        <span class="n">group_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">high_expression_genes</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_dict</span>
+</pre></div>
+</div>
+<p>Display partial key regulatory gene inference results.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">regulatory_gene_filter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;examples/data/C.elegans/C.elegans_Core/additional_input_data/regulatory_genes_name.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Take lineage ABpr as an example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edges</span> <span class="o">=</span> <span class="n">parse_edge_dict</span><span class="p">(</span><span class="n">edges_dict_Celegans</span><span class="p">[</span><span class="s1">&#39;ABpr&#39;</span><span class="p">])</span>
+<span class="n">fate_map</span> <span class="o">=</span> <span class="n">FateMap</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">high_expression_genes</span><span class="p">[</span><span class="s1">&#39;ABpr&#39;</span><span class="p">])</span>
+<span class="n">input_path</span> <span class="o">=</span> <span class="s1">&#39;examples/results/C.elegans/C.elegans_Full/ABpr&#39;</span>
+<span class="n">grn_dict_ABpr</span> <span class="o">=</span> <span class="n">get_dynamic_networks</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">,</span> <span class="n">target_genes_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ancestor_node_id</span> <span class="o">=</span> <span class="s1">&#39;ABprpa&#39;</span>
+<span class="n">child_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">fate_map</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">ancestor_node_id</span><span class="p">]</span><span class="o">.</span><span class="n">directed_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">child_nodes</span><span class="p">)</span>
+<span class="n">high_expression_target_genes_in_child_1</span> <span class="o">=</span> <span class="n">fate_map</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">child_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">high_expression_genes_in_leaf</span>
+<span class="n">high_expression_target_genes_in_child_2</span> <span class="o">=</span> <span class="n">fate_map</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">child_nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">high_expression_genes_in_leaf</span>
+ 
+<span class="n">Tar_1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">target_genes_name</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">high_expression_target_genes_in_child_1</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">high_expression_target_genes_in_child_2</span><span class="p">))</span>
+<span class="n">Tar_2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">target_genes_name</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">high_expression_target_genes_in_child_2</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">high_expression_target_genes_in_child_1</span><span class="p">))</span>
+
+<span class="n">key_regulators_df_ABprpa</span> <span class="o">=</span> <span class="n">find_fate_bias_genes</span><span class="p">(</span><span class="n">grn_dict_ABpr</span><span class="p">,</span> <span class="s1">&#39;ABprpa&#39;</span><span class="p">,</span> <span class="n">Tar_1</span><span class="p">,</span> <span class="n">Tar_2</span><span class="p">,</span> <span class="n">regulatory_genes_name</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">merge_key_regulators</span><span class="p">(</span><span class="n">key_regulators_df_ABprpa</span><span class="p">,</span> <span class="n">child_nodes</span><span class="p">)</span>
+<span class="n">df_filter</span> <span class="o">=</span> <span class="n">filter_regulatory_genes</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">regulatory_gene_filter</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>	Regulatory gene	FBI_ABprpap-	FBP_ABprpap-	FBI_ABprpaa-	FBP_ABprpaa-
+5	pal-1	        0.472304	            0.000000	        0.527696	            0.600000
+6	irx-1	        0.466638	            0.000000	        0.533362	            0.600000
+9	eor-1	        0.457475	            0.000000	        0.542525	            0.600000
+22	nhr-25	        0.456371	            0.000000	        0.543629	            0.500000
+23	dpl-1	        0.468601	            0.000000	        0.531399	            0.600000
+... ...
+</pre></div>
+</div>
+<p><strong>Visualization</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_key_genes_fate_bias</span><span class="p">(</span><span class="n">df_filter</span><span class="p">,</span> <span class="n">child_nodes</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">1.65</span><span class="p">,</span><span class="mf">2.8</span><span class="p">))</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/13_fate_bias.svg" width="200">
+</p>
+</section>
+<section id="identifying-constitutive-and-specific-regulatory-interactions">
+<h3>Identifying Constitutive and Specific Regulatory Interactions<a class="headerlink" href="#identifying-constitutive-and-specific-regulatory-interactions" title="Link to this heading">¶</a></h3>
+<p>This step outputs the clustering results of each regulatory relationship using fuzzy C-means clustering. The outputs include:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">X</span></code></strong>: A DataFrame where each row represents a regulatory relationship, each column represents a node in the fate map, and each element is either 0 (no interaction) or 1 (interaction exists).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">centers</span></code></strong>: The centers of the edge clusters.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">weight_matrix</span></code></strong>: The membership matrix for each regulatory relationship in each edge cluster.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">weight_matrix</span> <span class="o">=</span> <span class="n">cluster_regulatory_interactions</span><span class="p">(</span><span class="n">saved_dir</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">target_gene_names</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regulator_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>(      MSE  MS  E  MSp-  MSa-  Ep-  Ea-
+ 0       1   1  1     1     1    1    1
+ 1       1   1  1     1     1    1    1
+ 2       1   1  1     1     1    1    1
+ 3       1   1  1     1     1    1    1
+ 4       1   1  1     1     1    1    0
+ ...   ...  .. ..   ...   ...  ...  ...
+ 1389    1   1  1     1     1    1    1
+ 1390    0   0  0     0     0    0    0
+ 1391    0   0  0     0     0    0    0
+ 1392    0   0  0     0     0    0    0
+ 1393    1   1  1     1     1    1    1
+
+ [1394 rows x 7 columns],
+
+            0         1         2         3         4         5         6
+0  0.046258  0.032178  0.117197  0.039124  0.050451  0.043458  0.947314
+1  0.188813  0.045104  0.963920  0.054591  0.113503  0.880305  0.834711
+2  0.990004  0.983410  0.980623  0.963207  0.947537  0.936966  0.961219
+3  0.933149  0.971438  0.075477  0.961343  0.821624  0.095924  0.134773
+4  0.007278  0.008996  0.011875  0.014350  0.015490  0.014834  0.008857,
+
+EdgeCluster_1  EdgeCluster_2  EdgeCluster_3  EdgeCluster_4  EdgeCluster_5
+ceh-16-&gt;eef-1A.1       0.001904       0.003105       0.989338       0.004157  
+ceh-16-&gt;nhr-23         0.001904       0.003105       0.989338       0.004157  
+ceh-16-&gt;elt-1          0.001904       0.003105       0.989338       0.004157  
+ceh-16-&gt;hlh-1          0.001904       0.003105       0.989338       0.004157  
+...
+hlh-26-&gt;dpl-1          0.998029  
+hlh-26-&gt;mab-5          0.998029  
+hlh-26-&gt;lin-39         0.001495  
+
+[1394 rows x 5 columns]
+</pre></div>
+</div>
+<p>This step outputs the proportion of regulatory interactions in each edge cluster for specific cell types.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">identify_regulatory_interactions_specificity</span> <span class="o">=</span> <span class="n">map_edge_clusters_to_nodes</span><span class="p">(</span>
+    <span class="n">saved_dir</span><span class="p">,</span> <span class="n">fate_map</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">target_gene_names</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regulator_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_gene_names</span><span class="p">),</span> <span class="n">weight_matrix</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>EdgeCluster_1	  EdgeCluster_2	  EdgeCluster_3	  EdgeCluster_4	  EdgeCluster_5
+MSE	0.000000	    0.208333	    1.000000	    0.949686	    0.000000
+MS	0.000000	    0.000000	    1.000000	    1.000000	    0.000000
+E	0.000000	    1.000000	    1.000000	    0.000000	    0.000000
+MSp-	0.008929	    0.023810	    0.936877	    0.981132	    0.029046
+MSa-	0.071429	    0.148810	    0.906977	    0.792453	    0.053942
+Ep-	0.000000	    1.000000	    0.860465	    0.113208	    0.000000
+Ea-	1.000000	    0.744048	    0.930233	    0.163522	    0.000000
+</pre></div>
+</div>
+<p><strong>Visualization</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_regulatory_interactions_clustering</span><span class="p">(</span><span class="n">weight_matrix</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_regulatory_interactions_in_celltypes</span><span class="p">(</span><span class="n">edges_cluster_to_nodes</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p align="center">
+  <img src="../_static/12_edge_cluster_node.svg" width="200">
+</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="02_Experimental_data.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Example of Zebrafish Heart Regeneration</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="00_Simulated_data.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Example of Simulated Data</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Xiaochen Yu
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Example of Caenorhabditis elegans Dataset</a><ul>
+<li><a class="reference internal" href="#data-acquisition">Data Acquisition</a><ul>
+<li><a class="reference internal" href="#time-scaled-cell-fate-map">Time-Scaled Cell Fate Map</a></li>
+<li><a class="reference internal" href="#scrna-seq-data">scRNA-seq Data</a></li>
+<li><a class="reference internal" href="#fluorescence-based-gene-expression-data">Fluorescence-Based Gene Expression Data</a></li>
+<li><a class="reference internal" href="#scatac-seq-data">scATAC-seq Data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-preprocessing">Data Preprocessing</a><ul>
+<li><a class="reference internal" href="#id1">Time-scaled Cell Fate Map</a></li>
+<li><a class="reference internal" href="#id2">scRNA-seq Data</a><ul>
+<li><a class="reference internal" href="#preprocessing-steps">Preprocessing Steps</a></li>
+<li><a class="reference internal" href="#references-and-tools-used">References and Tools Used</a></li>
+<li><a class="reference internal" href="#preprocessed-formats">Preprocessed Formats</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">scATAC-seq Data</a><ul>
+<li><a class="reference internal" href="#id4">Preprocessing Steps</a></li>
+<li><a class="reference internal" href="#id5">References and Tools Used</a></li>
+<li><a class="reference internal" href="#id6">Preprocessed Formats</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inference-of-gene-regulatory-networks">Inference of Gene Regulatory Networks</a><ul>
+<li><a class="reference internal" href="#grn-inference-for-different-lineages">GRN Inference for Different Lineages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validation-of-lineagegrn-performance">Validation of LineageGRN Performance</a><ul>
+<li><a class="reference internal" href="#expression-prediction">Expression Prediction</a></li>
+<li><a class="reference internal" href="#high-expression-analysis">High Expression Analysis</a></li>
+<li><a class="reference internal" href="#matching">Matching</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#downstream-analysis">Downstream Analysis</a><ul>
+<li><a class="reference internal" href="#revealing-the-structural-dynamics-of-grns">Revealing the Structural Dynamics of GRNs</a></li>
+<li><a class="reference internal" href="#identifying-key-genes-driving-differentiation">Identifying Key Genes Driving Differentiation</a></li>
+<li><a class="reference internal" href="#identifying-key-regulatory-genes-driving-cell-fate-bias">Identifying Key Regulatory Genes Driving Cell Fate Bias</a></li>
+<li><a class="reference internal" href="#identifying-constitutive-and-specific-regulatory-interactions">Identifying Constitutive and Specific Regulatory Interactions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>
