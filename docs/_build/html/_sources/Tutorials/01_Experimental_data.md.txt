@@ -469,7 +469,7 @@ plt.show()
 ```
 
 <p align="center">
-  <img src="../_static/matching_result_small.svg" width="200">
+  <img src="../_static/matching_result_small.svg" width="400">
 </p>
 
 ```python
@@ -517,7 +517,7 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'negative', 
 ```
 
 <p align="center">
-  <img src="../_static/04_negative_regulator_num.svg" width="200">
+  <img src="../_static/04_negative_regulator_num.svg" width="400">
 </p>
 
 2. **Visualization of the Changes in the Number of Positive Regulations**  
@@ -528,7 +528,7 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'positive', 
 ```
 
 <p align="center">
-  <img src="../_static/05_positive_regulator_num.svg" width="200">
+  <img src="../_static/05_positive_regulator_num.svg" width="400">
 </p>
 
 3. **Visualization of the Changes in the Total Number of Regulations**  
@@ -539,7 +539,7 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'total', sav
 ```
 
 <p align="center">
-  <img src="../_static/06_total_regulator_num.svg" width="200">
+  <img src="../_static/06_total_regulator_num.svg" width="400">
 </p>
 
 4. **Visualization of the Dynamic Regulatory Networks for 'elt-7'**  
@@ -581,7 +581,7 @@ plot_regulator_activity_across_lineages(edges_dict_Celegans, input_path, 'nhr-25
 ```
 
 <p align="center">
-  <img src="../_static/09_regulator_activity.svg" width="300">
+  <img src="../_static/09_regulator_activity.svg" width="400">
 </p>
 
 ### Identifying Key Genes Driving Differentiation
@@ -622,7 +622,7 @@ plot_key_genes_differentiation(key_regulators_df_concat, nodes, regulator_names,
 ```
 
 <p align="center">
-  <img src="../_static/10_key_regulator.svg" width="700">
+  <img src="../_static/10_key_regulator.svg" width="500">
 </p>
 
 ### Identifying Key Regulatory Genes Driving Cell Fate Bias
@@ -797,7 +797,7 @@ plot_regulatory_interactions_in_celltypes(edges_cluster_to_nodes, output_path)
 ```
 
 <p align="center">
-  <img src="../_static/12_edge_cluster_node.svg" width="200">
+  <img src="../_static/12_edge_cluster_node.svg" width="400">
 </p>
 
 

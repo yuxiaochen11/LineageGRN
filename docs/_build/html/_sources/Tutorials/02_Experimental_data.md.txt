@@ -197,7 +197,7 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'negative', 
 ```
 
 <p align="center">
-  <img src="../_static/04_negative_regulator_num_zebrafish.svg" width="300">
+  <img src="../_static/04_negative_regulator_num_zebrafish.svg" width="400">
 </p>
 
 2. **Visualization of Positive Regulation Changes**
@@ -207,7 +207,7 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'positive', 
 ```
 
 <p align="center">
-  <img src="../_static/05_positive_regulator_num_zebrafish.svg" width="300">
+  <img src="../_static/05_positive_regulator_num_zebrafish.svg" width="400">
 </p>
 
 3. **Visualization of Dynamic Regulatory Networks for 'klf2a'**
@@ -291,7 +291,7 @@ plot_key_genes_differentiation(key_regulators_df_concat_V2, nodes, regulator_nam
 ```
 
 <p align="center">
-  <img src="../_static/10_key_regulator_zebrafish.svg" width="800">
+  <img src="../_static/10_key_regulator_zebrafish.svg" width="600">
 </p>
 
 ---
@@ -326,7 +326,7 @@ plot_key_genes_fate_bias(merged_df, child_nodes, output_path, figsize=(1.5, 3))
 ```
 
 <p align="center">
-  <img src="../_static/13_fate_bias_zebrafish.svg" width="150">
+  <img src="../_static/13_fate_bias_zebrafish.svg" width="200">
 </p>
 
 ---
@@ -345,5 +345,5 @@ plot_regulatory_interactions_in_celltypes(edges_cluster_to_nodes, output_path)
 ```
 
 <p align="center">
-  <img src="../_static/13_edge_cluster_node_zebrafish.svg" width="200">
+  <img src="../_static/13_edge_cluster_node_zebrafish.svg" width="400">
 </p>
