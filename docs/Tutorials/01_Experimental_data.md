@@ -469,7 +469,7 @@ plt.show()
 ```
 
 <p align="center">
-  <img src="../_static/matching_result_small.svg" width="200">
+  <img src="../_static/matching_result_small.svg" width="400">
 </p>
 
 ```python
