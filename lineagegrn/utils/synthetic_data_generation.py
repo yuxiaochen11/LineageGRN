@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from .constant import * 
 from lineagegrn.cell_fate_map import *
-import sergio
+from SERGIO.sergio import sergio
 from lineagegrn.utils.basic import newick_to_edge_length_dict
 
 

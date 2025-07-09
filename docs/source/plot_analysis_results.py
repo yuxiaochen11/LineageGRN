@@ -57,73 +57,81 @@ def plot_regulatory_interactions_along_fatemap(grns_dict, path, output_path, fig
     plt.savefig(output_path + 'dynamic_edge_number.eps', format='eps', bbox_inches='tight')
     plt.show()
 
-def plot_regulatory_genes_along_fatemap(input_path, regulator_names, regulator_id, path, threshold, output_path, figsize=(1.5, 1)):
+def plot_target_genes_along_fatemap(
+    ordered_genes, regulator_names, regulatory_module,
+    input_path, nodes, threshold, output_path,
+    figsize=(2.2, 1.5)
+):
     """
-    Plot the number of target genes regulated by a specific regulator along a specified path.
+    Plot a heatmap of regulatory interaction counts for target genes along a fate map.
 
-    :param input_path: **The path to the input data files**.
+    Rows correspond to target genes (in descending order of total regulation),
+    columns correspond to nodes (cell types).
+
+    :param ordered_genes: List of target gene IDs sorted by regulation count.
+    :type ordered_genes: list[str]
+    :param regulator_names: List of regulator factor names.
+    :type regulator_names: list[str]
+    :param regulatory_module: Regulation mode, one of 'positive', 'negative', or 'total'.
+    :type regulatory_module: str
+    :param input_path: Path to the directory containing regulation data files.
     :type input_path: str
-    :param regulator_names: **A list of regulator names**.
-    :type regulator_names: list of str
-    :param regulator_id: **The ID of the regulator to analyze**.
-    :type regulator_id: str
-    :param path: **A list of node IDs representing the path to trace**.
-    :type path: list of str
-    :param threshold: **A threshold for determining the significance of target gene interactions**.
+    :param nodes: List of node IDs.
+    :type nodes: list[str]
+    :param threshold: Threshold above (or below) which a regulation is considered active.
     :type threshold: float
-    :param output_path: **The directory where the plot will be saved**.
+    :param output_path: Directory in which to save the output heatmap.
     :type output_path: str
-    :param figsize: **The size of the plot** (default is (1.5, 1)).
-    :type figsize: tuple of float, optional
-
-    :returns: **None**: This function saves the plot to the specified output path and displays it.
+    :param figsize: Figure size as (width, height) in inches.
+    :type figsize: tuple[float, float]
+    :return: None. Saves the heatmap to a file and displays it.
     :rtype: None
-
     """
-    
-    node_id_list = []      
-    target_number_list = []  
+    plt.rcParams['font.size'] = 6
 
-    # Iterate through the nodes in the specified path
-    for node_id in path:
-        # Retrieve the target genes regulated by the specified regulator
-        target_dict = get_target_genes(regulator_id, node_id, input_path, regulator_names)
-        
-        # Count the number of target genes that meet the threshold
-        target_num = sum(1 for v in target_dict.values() if abs(v) > threshold)
-        
-        # Append the results to the lists
-        node_id_list.append(node_id)
-        target_number_list.append(target_num)
+    # Select colormap based on regulation mode
+    if regulatory_module == 'positive':
+        cmap_name = 'Reds'
+    elif regulatory_module == 'negative':
+        cmap_name = 'Blues'
+    else:
+        cmap_name = 'YlGnBu'
 
-    # Create a DataFrame for the plot data
-    target_number_df = pd.DataFrame({'node_id': node_id_list, 'target_number': target_number_list})
+    # Build the data matrix in the specified gene order
+    df = pd.DataFrame(index=nodes, columns=ordered_genes, dtype=int)
+    for gene in ordered_genes:
+        counts = []
+        for node in nodes:
+            regs = get_regulators_for_target_gene(
+                gene, node, input_path, regulator_names
+            )
+            if regulatory_module == 'positive':
+                cnt = sum(1 for v in regs.values() if v > threshold)
+            elif regulatory_module == 'negative':
+                cnt = sum(1 for v in regs.values() if v < -threshold)
+            else:
+                cnt = sum(1 for v in regs.values() if abs(v) > threshold)
+            counts.append(cnt)
+        df[gene] = counts
 
-    # Create and plot the figure
-    plt.figure(figsize=figsize) 
-    plt.plot(
-        'node_id', 
-        'target_number', 
-        data=target_number_df, 
-        linestyle='-', 
-        marker='o', 
-        linewidth=0.5, 
-        markersize=3, 
-        color='#2EA7E0',           
-        markerfacecolor='none'     
-    )
-    
-    # Label the axes with appropriate font size
+    # Plot the heatmap (transpose to have genes on the rows)
+    plt.figure(figsize=figsize)
+    g = sns.heatmap(df.T, cmap=plt.get_cmap(cmap_name))
+
+    plt.setp(g.get_yticklabels(), fontsize=5, fontname='Arial')
+    plt.setp(g.get_xticklabels(), fontsize=5, fontname='Arial', rotation=-90)
+    g.tick_params(axis='both', which='major', labelsize=5, length=1)
+    if g.collections:
+        g.collections[0].colorbar.ax.tick_params(labelsize=5, length=1)
+
     plt.xlabel('Cell type', fontsize=6, fontname='Arial')
-    plt.ylabel('# Target gene', fontsize=6, fontname='Arial')
-    
-    # Set tick sizes and rotation for better readability
-    plt.xticks(rotation=-90, fontsize=5, fontname='Arial')
-    plt.yticks(fontsize=5, fontname='Arial')
+    plt.ylabel('Target genes', fontsize=6, fontname='Arial')
 
-    # Save the plot as EPS and display it
-    plt.savefig(output_path + f'dynamic_target_gene_number_for_{regulator_id}.eps', format='eps', bbox_inches='tight')
+    os.makedirs(output_path, exist_ok=True)
+    out_file = os.path.join(output_path, 'dynamic_regulator_number_heatmap.eps')
+    plt.savefig(out_file, format='eps', bbox_inches='tight')
     plt.show()
+
 
 def plot_target_genes_along_fatemap(target_gene_names, regulator_names, regulatory_module, input_path, nodes, threshold, output_path, figsize=(2.2, 1.5)):
     """

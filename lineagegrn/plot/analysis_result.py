@@ -11,7 +11,7 @@ from lineagegrn.downstream_analysis.key_genes_identification import *
 from lineagegrn.downstream_analysis.key_interactions_identification import *
 
 # Display of network topology difference analysis results.
-def plot_regulatory_interactions_along_fatemap(grns_dict,path,output_path,figsize=(1.5,1)):
+def plot_regulatory_interactions_along_fatemap(grns_dict, path, output_path, figsize=(1.5,1)):
     """
     Plot the number of dynamic edges for nodes along a specified path in the gene regulatory network.
 
@@ -58,7 +58,7 @@ def plot_regulatory_interactions_along_fatemap(grns_dict,path,output_path,figsiz
     plt.savefig(output_path + 'dynamic_edge_number.eps', format='eps', bbox_inches='tight')
     plt.show()
 
-def plot_regulatory_genes_along_fatemap(input_path, regulator_names, regulator_id, path, threshold, output_path,figsize=(1.5,1)):
+def plot_regulatory_genes_along_fatemap(input_path, regulator_names, regulator_id, path, threshold, output_path, figsize=(1.5,1)):
     """
     Plot the number of target genes regulated by a specific regulator along a specified path.
 
@@ -105,7 +105,7 @@ def plot_regulatory_genes_along_fatemap(input_path, regulator_names, regulator_i
     plt.savefig(output_path + f'dynamic_target_gene_number_for_{regulator_id}.eps', format='eps', bbox_inches='tight')
     plt.show()
 
-def plot_dynamic_regulator_number(input_path, regulator_names, target_gene_id, path, threshold,output_path,figsize=(1.5,1)):
+def plot_dynamic_regulator_number(input_path, regulator_names, target_gene_id, path, threshold, output_path, figsize=(1.5,1)):
     """
     Plot the number of regulators for a specified target gene across different nodes.
 
@@ -140,68 +140,117 @@ def plot_dynamic_regulator_number(input_path, regulator_names, target_gene_id, p
     plt.savefig(output_path + 'dynamic_regulator_number_for_' + target_gene_id + '.eps', format='eps', bbox_inches='tight')
     plt.show() 
 
-def plot_target_genes_along_fatemap(target_gene_names, regulator_names,regulatory_module,input_path, nodes, threshold, output_path,figsize=(2.2,1.5)):
+def regulatory_number_rank(target_gene_names, regulator_names, regulatory_module, input_path, nodes, threshold):
     """
-    Plot a heatmap showing the number of regulators for each target gene across specified nodes.
+    Sort target genes in descending order by their total number of regulatory interactions across all nodes.
 
-    Parameters:
-    target_gene_names (list): A list of target gene IDs to analyze.
-    regulator_names (list): A list of regulator names to be used for analysis.
-    regulatory_module (str): 'positive' or 'negative' or 'total'
-    input_path (str): The folder path containing input files with regulatory data.
-    fate_map: A structure that contains the regulatory network (not used in this function).
-    nodes (list): A list of node IDs for which to calculate the number of regulators.
-    threshold (float): The threshold value for considering a regulator active.
-    output_path (str): The path where the output plot will be saved.
-
-    Returns:
-    None: This function saves the heatmap to the specified output path and displays it.
+    :param target_gene_names: List of target gene IDs.
+    :type target_gene_names: list[str]
+    :param regulator_names: List of regulator factor names.
+    :type regulator_names: list[str]
+    :param regulatory_module: Regulation mode, one of 'positive', 'negative', or 'total'.
+    :type regulatory_module: str
+    :param input_path: Path to the directory containing regulation data files.
+    :type input_path: str
+    :param nodes: List of node IDs.
+    :type nodes: list[str]
+    :param threshold: Threshold above (or below) which a regulation is considered active.
+    :type threshold: float
+    :return: Target genes sorted by descending total regulation count.
+    :rtype: list[str]
     """
-    
-    plt.rcParams['font.size'] = 6  
-
-    regulator_number_df = pd.DataFrame() 
-    
-    for target_gene_id in target_gene_names:
-        regulator_number_list = []  
-        
-        for node_id in nodes:
-            regulator_dict = get_regulators_for_target_gene(target_gene_id, node_id, input_path, regulator_names)
-            if regulatory_module =='positive':
-                regulator_num = sum(1 for v in regulator_dict.values() if v > threshold)
-                color='Reds'  
-            elif regulatory_module =='negative':
-                regulator_num = sum(1 for v in regulator_dict.values() if v < -threshold) 
-                color='Blues'
+    # Build the raw count matrix
+    mat = pd.DataFrame(index=nodes, columns=target_gene_names, dtype=int)
+    for gene in target_gene_names:
+        for node in nodes:
+            regs = get_regulators_for_target_gene(
+                gene, node, input_path, regulator_names
+            )
+            if regulatory_module == 'positive':
+                cnt = sum(1 for v in regs.values() if v > threshold)
+            elif regulatory_module == 'negative':
+                cnt = sum(1 for v in regs.values() if v < -threshold)
             else:
-                regulator_num = sum(1 for v in regulator_dict.values() if abs(v) > threshold)  
-                color='Oranges'
-            regulator_number_list.append(regulator_num)  # Append the count to the list
-        
-        regulator_number_df_for_target_id = pd.DataFrame({target_gene_id: regulator_number_list})
-        regulator_number_df = pd.concat([regulator_number_df, regulator_number_df_for_target_id], axis=1)
+                cnt = sum(1 for v in regs.values() if abs(v) > threshold)
+            mat.at[node, gene] = cnt
+
+    # Sum across nodes and sort genes
+    sorted_genes = mat.sum(axis=0).sort_values(ascending=False).index.tolist()
+    return sorted_genes
+
+def plot_target_genes_along_fatemap(ordered_genes, regulator_names, regulatory_module, input_path, nodes, threshold, output_path, figsize=(2.2, 1.5)):
     
-    regulator_number_df.index = nodes  # Set the index of the DataFrame to the node IDs
-    
+    """
+    Plot a heatmap of regulatory interaction counts for target genes along a fate map.
+
+    Rows correspond to target genes (in descending order of total regulation),
+    columns correspond to nodes (cell types).
+
+    :param ordered_genes: List of target gene IDs sorted by regulation count.
+    :type ordered_genes: list[str]
+    :param regulator_names: List of regulator factor names.
+    :type regulator_names: list[str]
+    :param regulatory_module: Regulation mode, one of 'positive', 'negative', or 'total'.
+    :type regulatory_module: str
+    :param input_path: Path to the directory containing regulation data files.
+    :type input_path: str
+    :param nodes: List of node IDs.
+    :type nodes: list[str]
+    :param threshold: Threshold above (or below) which a regulation is considered active.
+    :type threshold: float
+    :param output_path: Directory in which to save the output heatmap.
+    :type output_path: str
+    :param figsize: Figure size as (width, height) in inches.
+    :type figsize: tuple[float, float]
+    :return: None. Saves the heatmap to a file and displays it.
+    :rtype: None
+    """
+    plt.rcParams['font.size'] = 6
+
+    # Select colormap based on regulation mode
+    if regulatory_module == 'positive':
+        cmap_name = 'Reds'
+    elif regulatory_module == 'negative':
+        cmap_name = 'Blues'
+    else:
+        cmap_name = 'YlGnBu'
+
+    # Build the data matrix in the specified gene order
+    df = pd.DataFrame(index=nodes, columns=ordered_genes, dtype=int)
+    for gene in ordered_genes:
+        counts = []
+        for node in nodes:
+            regs = get_regulators_for_target_gene(
+                gene, node, input_path, regulator_names
+            )
+            if regulatory_module == 'positive':
+                cnt = sum(1 for v in regs.values() if v > threshold)
+            elif regulatory_module == 'negative':
+                cnt = sum(1 for v in regs.values() if v < -threshold)
+            else:
+                cnt = sum(1 for v in regs.values() if abs(v) > threshold)
+            counts.append(cnt)
+        df[gene] = counts
+
+    # Plot the heatmap (transpose to have genes on the rows)
     plt.figure(figsize=figsize)
-    g = sns.heatmap(data=regulator_number_df.T, cmap=plt.get_cmap(color))  # Transpose DataFrame for heatmap
-    
+    g = sns.heatmap(df.T, cmap=plt.get_cmap(cmap_name))
+
     plt.setp(g.get_yticklabels(), fontsize=5, fontname='Arial')
-    plt.setp(g.get_xticklabels(), fontsize=5, fontname='Arial',rotation=-90)
+    plt.setp(g.get_xticklabels(), fontsize=5, fontname='Arial', rotation=-90)
     g.tick_params(axis='both', which='major', labelsize=5, length=1)
-    
     if g.collections:
         g.collections[0].colorbar.ax.tick_params(labelsize=5, length=1)
-    
+
     plt.xlabel('Cell type', fontsize=6, fontname='Arial')
     plt.ylabel('Target genes', fontsize=6, fontname='Arial')
 
-    plt.savefig(output_path + 'dynamic_regulator_number_heatmap.eps', format='eps', bbox_inches='tight')
-    plt.show()  
+    os.makedirs(output_path, exist_ok=True)
+    out_file = os.path.join(output_path, 'dynamic_regulator_number_heatmap.eps')
+    plt.savefig(out_file, format='eps', bbox_inches='tight')
+    plt.show()
 
-
-
-def plot_regulatory_network_along_fatemap(regulator_id, grns_dict, nodes, output_path, threshold=0.1,figsize=(6.8, 1.8)):
+def plot_regulatory_network_along_fatemap(regulator_id, grns_dict, nodes, output_path, threshold=0.1, figsize=(6.8, 1.8)):
     """
     Plot the dynamic regulatory network for a specific regulator across multiple nodes.
     """
@@ -337,10 +386,7 @@ def plot_regulatory_network_along_fatemap(regulator_id, grns_dict, nodes, output
                 format='eps', bbox_inches='tight')
     plt.show()
 
-
-
-
-def plot_regulator_activity_across_lineages(edges_dict,input_folder_path,regulator_id,regulator_names,threshold,output_path,figsize=(3,3)):
+def plot_regulator_activity_across_lineages(edges_dict, input_folder_path, regulator_id, regulator_names, threshold, output_path, figsize=(3,3)):
     """
     Plot the activity of a specified regulator across different lineages in a polar plot.
 
@@ -468,9 +514,7 @@ def plot_regulator_activity_across_lineages(edges_dict,input_folder_path,regulat
     fig.show()  
     fig.savefig(output_path + 'dynamic_regulator_activity.eps', format='eps', bbox_inches='tight') 
 
-
-
-def plot_regulatory_strength_along_fatemap(input_path, path, regulator_names, target_gene_id, output_path,figsize=(3, 1.5)):
+def plot_regulatory_strength_along_fatemap(input_path, path, regulator_names, target_gene_id, output_path, figsize=(3, 1.5)):
     """
     Plot the regulatory strength of different regulators for a specified target gene across various nodes.
 
@@ -552,8 +596,7 @@ def plot_regulatory_strength_along_fatemap(input_path, path, regulator_names, ta
     plt.savefig(output_path + 'dynamic_regulatory_strength.eps', format='eps', bbox_inches='tight')
     plt.show() 
 
-
-def plot_key_genes_differentiation(data, nodes, regulator_names, output_path,figsize=(5, 1)):
+def plot_key_genes_differentiation(data, nodes, regulator_names, output_path, figsize=(5, 1)):
     """
     Plots key regulators based on their regulatory strength and node information.
 
@@ -629,7 +672,6 @@ def plot_key_genes_differentiation(data, nodes, regulator_names, output_path,fig
     plt.show()
     
     return ax
-
 
 def plot_key_genes_fate_bias(df, child_nodes, output_path, figsize=(1.5, 12)): 
     FBP_0 = 'FBP_' + child_nodes[0]
@@ -746,9 +788,7 @@ def plot_key_genes_fate_bias(df, child_nodes, output_path, figsize=(1.5, 12)):
     plt.savefig(output_path + 'find_fate_bias_genes.eps', format='eps', bbox_inches='tight')
     plt.show()
 
-
-
-def plot_regulatory_interactions_clustering(weight_matrix, output_path,width=3, height=7):
+def plot_regulatory_interactions_clustering(weight_matrix, output_path, width=3, height=7):
     """
     Plots a clustered heatmap of the weights in a given edge_cluster.
 
@@ -776,8 +816,7 @@ def plot_regulatory_interactions_clustering(weight_matrix, output_path,width=3, 
 
     plt.savefig(output_path + 'edge_cluster_weight.eps', format='eps', bbox_inches='tight')
 
-
-def plot_regulatory_interactions_in_celltypes(locate_edge_cluster_to_nodes_df, output_path,figsize=(1.8, 2.2)):
+def plot_regulatory_interactions_in_celltypes(locate_edge_cluster_to_nodes_df, output_path, figsize=(1.8, 2.2)):
     """
     Plots a heatmap showing the association between edge_clusters and nodes.
 

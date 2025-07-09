@@ -193,7 +193,8 @@ target_gene_dict = get_target_genes('tbx21', 'Tcells', saved_dir, regulator_name
 1. **Visualization of Negative Regulation Changes**
 
 ```python
-plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'negative', saved_dir, list(fate_map.nodes.keys()), 0, output_path)
+ordered_genes = regulatory_number_rank(target_gene_names, regulator_names, 'total', saved_dir, path, 0.1)
+plot_target_genes_along_fatemap(ordered_genes, regulator_names, 'negative', saved_dir, path, 0.1, output_path
 ```
 
 <p align="center">
@@ -203,14 +204,24 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'negative', 
 2. **Visualization of Positive Regulation Changes**
 
 ```python
-plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'positive', saved_dir, list(fate_map.nodes.keys()), 0, output_path)
+plot_target_genes_along_fatemap(ordered_genes, regulator_names, 'positive', saved_dir, path, 0.1, output_path)
 ```
 
 <p align="center">
   <img src="../_static/05_positive_regulator_num_zebrafish.svg" width="400">
 </p>
 
-3. **Visualization of Dynamic Regulatory Networks for 'klf2a'**
+3. **Visualization of Total Regulation Changes**
+
+```python
+plot_target_genes_along_fatemap(ordered_genes, regulator_names, 'total', saved_dir, path, 0.1, output_path)
+```
+
+<p align="center">
+  <img src="../_static/06_total_regulator_num_zebrafish.svg" width="400">
+</p>
+
+4. **Visualization of Dynamic Regulatory Networks for 'klf2a'**
 
 ```python
 path = fate_map.get_path("Endocardium")
@@ -221,7 +232,7 @@ plot_regulatory_network_along_fatemap('klf2a', dynamic_networks_dict, path, outp
   <img src="../_static/07_dynamic_network_zebrafish.svg" width="700">
 </p>
 
-4. **Visualization of Regulatory Strength on Target Gene 'uchl1'**
+5. **Visualization of Regulatory Strength on Target Gene 'uchl1'**
 
 ```python
 plot_regulatory_strength_along_fatemap(saved_dir, path, regulator_names, 'uchl1', output_path)

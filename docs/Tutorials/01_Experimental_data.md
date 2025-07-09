@@ -513,7 +513,8 @@ target_gene_dict = get_target_genes('elt-7', 'Ea-', saved_dir, regulator_names)
    Plot the negative regulatory interactions for each target gene along the fate map.
 
 ```python
-plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'negative', saved_dir, path, 0.1, output_path)
+ordered_genes = regulatory_number_rank(target_gene_names, regulator_names, 'total', saved_dir, path, 0.1)
+plot_target_genes_along_fatemap(ordered_genes, regulator_names, 'negative', saved_dir, path, 0.1, output_path)
 ```
 
 <p align="center">
@@ -524,7 +525,7 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'negative', 
    Plot the positive regulatory interactions for each target gene along the fate map.
 
 ```python
-plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'positive', saved_dir, path, 0.1, output_path)
+plot_target_genes_along_fatemap(ordered_genes, regulator_names, 'positive', saved_dir, path, 0.1, output_path)
 ```
 
 <p align="center">
@@ -535,11 +536,11 @@ plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'positive', 
    Plot the total number of regulatory interactions for each target gene along the fate map.
 
 ```python
-plot_target_genes_along_fatemap(target_gene_names, regulator_names, 'total', saved_dir, path, 0.1, output_path)
+plot_target_genes_along_fatemap(ordered_genes, regulator_names, 'total',saved_dir, path, 0.1, output_path)
 ```
 
 <p align="center">
-  <img src="../_static/06_total_regulator_num.svg" width="400">
+  <img src="../_static/05_total_regulator_num.svg" width="400">
 </p>
 
 4. **Visualization of the Dynamic Regulatory Networks for 'elt-7'**  

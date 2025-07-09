@@ -309,75 +309,80 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="plot_regulatory_genes_along_fatemap">
-<a class="viewcode-back" href="../API/plot_regulatory_genes_along_fatemap.html#plot_analysis_results.plot_regulatory_genes_along_fatemap">[docs]</a>
-<span class="k">def</span> <span class="nf">plot_regulatory_genes_along_fatemap</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">regulator_id</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+<span class="k">def</span> <span class="nf">plot_target_genes_along_fatemap</span><span class="p">(</span>
+    <span class="n">ordered_genes</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">,</span> <span class="n">regulatory_module</span><span class="p">,</span>
+    <span class="n">input_path</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">2.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Plot the number of target genes regulated by a specific regulator along a specified path.</span>
+<span class="sd">    Plot a heatmap of regulatory interaction counts for target genes along a fate map.</span>
 
-<span class="sd">    :param input_path: **The path to the input data files**.</span>
+<span class="sd">    Rows correspond to target genes (in descending order of total regulation),</span>
+<span class="sd">    columns correspond to nodes (cell types).</span>
+
+<span class="sd">    :param ordered_genes: List of target gene IDs sorted by regulation count.</span>
+<span class="sd">    :type ordered_genes: list[str]</span>
+<span class="sd">    :param regulator_names: List of regulator factor names.</span>
+<span class="sd">    :type regulator_names: list[str]</span>
+<span class="sd">    :param regulatory_module: Regulation mode, one of &#39;positive&#39;, &#39;negative&#39;, or &#39;total&#39;.</span>
+<span class="sd">    :type regulatory_module: str</span>
+<span class="sd">    :param input_path: Path to the directory containing regulation data files.</span>
 <span class="sd">    :type input_path: str</span>
-<span class="sd">    :param regulator_names: **A list of regulator names**.</span>
-<span class="sd">    :type regulator_names: list of str</span>
-<span class="sd">    :param regulator_id: **The ID of the regulator to analyze**.</span>
-<span class="sd">    :type regulator_id: str</span>
-<span class="sd">    :param path: **A list of node IDs representing the path to trace**.</span>
-<span class="sd">    :type path: list of str</span>
-<span class="sd">    :param threshold: **A threshold for determining the significance of target gene interactions**.</span>
+<span class="sd">    :param nodes: List of node IDs.</span>
+<span class="sd">    :type nodes: list[str]</span>
+<span class="sd">    :param threshold: Threshold above (or below) which a regulation is considered active.</span>
 <span class="sd">    :type threshold: float</span>
-<span class="sd">    :param output_path: **The directory where the plot will be saved**.</span>
+<span class="sd">    :param output_path: Directory in which to save the output heatmap.</span>
 <span class="sd">    :type output_path: str</span>
-<span class="sd">    :param figsize: **The size of the plot** (default is (1.5, 1)).</span>
-<span class="sd">    :type figsize: tuple of float, optional</span>
-
-<span class="sd">    :returns: **None**: This function saves the plot to the specified output path and displays it.</span>
+<span class="sd">    :param figsize: Figure size as (width, height) in inches.</span>
+<span class="sd">    :type figsize: tuple[float, float]</span>
+<span class="sd">    :return: None. Saves the heatmap to a file and displays it.</span>
 <span class="sd">    :rtype: None</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="n">node_id_list</span> <span class="o">=</span> <span class="p">[]</span>      
-    <span class="n">target_number_list</span> <span class="o">=</span> <span class="p">[]</span>  
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
 
-    <span class="c1"># Iterate through the nodes in the specified path</span>
-    <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
-        <span class="c1"># Retrieve the target genes regulated by the specified regulator</span>
-        <span class="n">target_dict</span> <span class="o">=</span> <span class="n">get_target_genes</span><span class="p">(</span><span class="n">regulator_id</span><span class="p">,</span> <span class="n">node_id</span><span class="p">,</span> <span class="n">input_path</span><span class="p">,</span> <span class="n">regulator_names</span><span class="p">)</span>
-        
-        <span class="c1"># Count the number of target genes that meet the threshold</span>
-        <span class="n">target_num</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">target_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
-        
-        <span class="c1"># Append the results to the lists</span>
-        <span class="n">node_id_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_id</span><span class="p">)</span>
-        <span class="n">target_number_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_num</span><span class="p">)</span>
+    <span class="c1"># Select colormap based on regulation mode</span>
+    <span class="k">if</span> <span class="n">regulatory_module</span> <span class="o">==</span> <span class="s1">&#39;positive&#39;</span><span class="p">:</span>
+        <span class="n">cmap_name</span> <span class="o">=</span> <span class="s1">&#39;Reds&#39;</span>
+    <span class="k">elif</span> <span class="n">regulatory_module</span> <span class="o">==</span> <span class="s1">&#39;negative&#39;</span><span class="p">:</span>
+        <span class="n">cmap_name</span> <span class="o">=</span> <span class="s1">&#39;Blues&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cmap_name</span> <span class="o">=</span> <span class="s1">&#39;YlGnBu&#39;</span>
 
-    <span class="c1"># Create a DataFrame for the plot data</span>
-    <span class="n">target_number_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="n">node_id_list</span><span class="p">,</span> <span class="s1">&#39;target_number&#39;</span><span class="p">:</span> <span class="n">target_number_list</span><span class="p">})</span>
+    <span class="c1"># Build the data matrix in the specified gene order</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">ordered_genes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">gene</span> <span class="ow">in</span> <span class="n">ordered_genes</span><span class="p">:</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">regs</span> <span class="o">=</span> <span class="n">get_regulators_for_target_gene</span><span class="p">(</span>
+                <span class="n">gene</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">input_path</span><span class="p">,</span> <span class="n">regulator_names</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">regulatory_module</span> <span class="o">==</span> <span class="s1">&#39;positive&#39;</span><span class="p">:</span>
+                <span class="n">cnt</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">regs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">regulatory_module</span> <span class="o">==</span> <span class="s1">&#39;negative&#39;</span><span class="p">:</span>
+                <span class="n">cnt</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">regs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">threshold</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cnt</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">regs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
+            <span class="n">counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">gene</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span>
 
-    <span class="c1"># Create and plot the figure</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span> 
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="s1">&#39;node_id&#39;</span><span class="p">,</span> 
-        <span class="s1">&#39;target_number&#39;</span><span class="p">,</span> 
-        <span class="n">data</span><span class="o">=</span><span class="n">target_number_df</span><span class="p">,</span> 
-        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> 
-        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> 
-        <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
-        <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
-        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2EA7E0&#39;</span><span class="p">,</span>           
-        <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>     
-    <span class="p">)</span>
-    
-    <span class="c1"># Label the axes with appropriate font size</span>
+    <span class="c1"># Plot the heatmap (transpose to have genes on the rows)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap_name</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=-</span><span class="mi">90</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Cell type&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;# Target gene&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
-    
-    <span class="c1"># Set tick sizes and rotation for better readability</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Target genes&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
 
-    <span class="c1"># Save the plot as EPS and display it</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_path</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;dynamic_target_gene_number_for_</span><span class="si">{</span><span class="n">regulator_id</span><span class="si">}</span><span class="s1">.eps&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;eps&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;dynamic_regulator_number_heatmap.eps&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;eps&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="plot_target_genes_along_fatemap">
