@@ -79,7 +79,7 @@ grn_inference.infer_grn()
 ```
 
 ### More
-More info about LineageGRN can be found on our website https://lineagegrn001.readthedocs.io. There you can find an API reference that give an introduction on how to use LineageGRN most effectively.
+More info about LineageGRN can be found on our website https://lineagegrn.readthedocs.io. There you can find an API reference that give an introduction on how to use LineageGRN most effectively.
 ***
 
 ### Citation
